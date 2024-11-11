@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Stormy and Hops</title>
     
-    <!-- Link to the favicon (IMG_1333.jpeg) located in the root directory -->
+    
     <link rel="icon" href="/IMG_1333.jpeg" type="image/jpeg">
     
     <style>
@@ -35,20 +35,35 @@
             color: #666;
             margin-top: 20px;
         }
+        .countdown span {
+            font-size: 48px;
+        }
+        .days {
+            color: red;
+        }
+        .hours {
+            color: yellow;
+        }
+        .minutes {
+            color: red;
+        }
+        .seconds {
+            color: yellow;
+        }
     </style>
 </head>
 <body>
 
 <div class="countdown-container">
     <div id="countdown" class="countdown"></div>
-    <div class="message">Time until Stormy and Hops website is officially open</div>
+    <div class="message">Time until <span style="color:red;">Stormy</span> and <span style="color:yellow;">Hops</span> website is officially open</div>
 </div>
 
 <script>
-// Set the target date (December 1, 2024 at 12:00 AM New York Time)
+
 const targetDate = new Date("December 1, 2024 00:00:00 GMT-0500"); // New York time (Eastern Standard Time)
 
-// Function to update the countdown
+
 function updateCountdown() {
     const now = new Date();
     const timeRemaining = targetDate - now;
@@ -59,8 +74,11 @@ function updateCountdown() {
     const minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
     const seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
 
-    // Display the countdown
-    document.getElementById("countdown").innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+    document.getElementById("countdown").innerHTML = 
+        `<span class="days">${days}d </span>
+        <span class="hours">${hours}h </span>
+        <span class="minutes">${minutes}m </span>
+        <span class="seconds">${seconds}s</span>`;
 
     // If the countdown reaches zero, display a message
     if (timeRemaining < 0) {
