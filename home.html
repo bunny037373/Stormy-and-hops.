@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Stormy and Hops</title>
 
-    <!-- Link to the favicon (IMG_1333.jpeg) located in the root directory -->
+    <!-- Link to the favicon -->
     <link rel="icon" href="/IMG_1333.jpeg" type="image/jpeg">
 
     <style>
@@ -29,7 +29,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            z-index: -1; /* Place behind countdown */
+            z-index: -1;
         }
 
         .ring {
@@ -65,41 +65,75 @@
 
         /* Countdown Styles */
         .countdown-container {
-            border: 2px solid #333;
             padding: 30px;
             background-color: #fff;
             border-radius: 10px;
             z-index: 1;
+            position: relative;
         }
+
+        /* Dual-colored outline for the countdown box */
+        .countdown-container::before,
+        .countdown-container::after {
+            content: '';
+            position: absolute;
+            top: -5px;
+            left: -5px;
+            right: -5px;
+            bottom: -5px;
+            border-radius: 10px;
+            pointer-events: none;
+        }
+
+        .countdown-container::before {
+            border: 3px solid red;
+        }
+
+        .countdown-container::after {
+            border: 3px solid yellow;
+            top: -10px;
+            left: -10px;
+            right: -10px;
+            bottom: -10px;
+        }
+
         .countdown {
             font-size: 48px;
             font-weight: bold;
             color: #333;
         }
+
         .message {
             font-size: 24px;
             color: #666;
             margin-top: 20px;
         }
+
         .countdown span {
             font-size: 48px;
         }
+
         .days {
             color: red;
         }
+
         .hours {
             color: yellow;
         }
+
         .minutes {
             color: red;
         }
+
         .seconds {
             color: yellow;
         }
+
         /* Colors for the "And" text */
         .red {
             color: red;
         }
+
         .yellow {
             color: yellow;
         }
@@ -125,7 +159,7 @@
 
 <script>
 // Set the target date (December 1, 2024 at 12:00 AM New York Time)
-const targetDate = new Date("December 1, 2024 00:00:00 GMT-0500"); // New York time (Eastern Standard Time)
+const targetDate = new Date("December 1, 2024 00:00:00 GMT-0500");
 
 // Function to update the countdown
 function updateCountdown() {
