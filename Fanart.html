@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stormy and Hops: Fan Art</title>
+    <link rel="icon" href="/IMG_1333.jpeg" type="image/jpeg">
+
+    <!-- Prevent Caching -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+
+    <style>
+        /* Loading Screen */
+        #loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #f0f8ff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+
+        .loader {
+            border: 12px solid #f0f8ff;
+            border-top: 12px solid red;
+            border-right: 12px solid yellow;
+            border-radius: 50%;
+            width: 120px;
+            height: 120px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Hide the content initially */
+        #content {
+            display: none;
+        }
+
+        /* Main Page Styling */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f8ff;
+            margin: 0;
+            text-align: center;
+            position: relative;
+        }
+
+        .navbar {
+            background-color: rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+            padding: 10px 0;
+        }
+
+        .navbar a {
+            color: white;
+            padding: 14px 20px;
+            text-decoration: none;
+            display: inline-block;
+            font-weight: bold;
+        }
+
+        .navbar a:nth-child(odd) { color: red; }
+        .navbar a:nth-child(even) { color: yellow; }
+        .navbar a:hover {
+            background-color: #ddd;
+            color: black;
+        }
+
+        .header {
+            padding: 50px;
+            background-color: #4CAF50;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .header h1 {
+            font-size: 36px;
+            margin: 0;
+            color: white;
+        }
+
+        .header p {
+            font-size: 18px;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+
+        /* Footer */
+        .footer {
+            margin-top: 40px;
+            padding: 20px;
+            background-color: #333;
+            color: white;
+        }
+
+        .footer p {
+            margin: 5px;
+        }
+
+        .footer a {
+            color: #f2f2f2;
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            color: #ddd;
+        }
+
+        /* Snowfall effect */
+        .snowflake {
+            position: absolute;
+            top: -10px;
+            pointer-events: none;
+            z-index: 9999;
+            font-size: 24px;
+            color: #ffffff;
+            user-select: none;
+            animation: fall 5s linear infinite;
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(100vh);
+            }
+        }
+
+        /* Button Style */
+        .submit-button {
+            padding: 15px 30px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 18px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .submit-button:hover {
+            background-color: #45a049;
+        }
+
+        /* Fan Art Images */
+        .fan-art-container {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 30px;
+            padding: 20px;
+        }
+
+        .fan-art-container img {
+            width: 200px;
+            height: auto;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: border 0.3s ease;
+        }
+
+        .fan-art-container img:hover {
+            border: 2px solid #4CAF50;
+        }
+
+        /* Voting Section */
+        .vote-section {
+            margin-top: 40px;
+            font-size: 18px;
+        }
+
+        .vote-button {
+            padding: 10px 20px;
+            margin: 5px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .vote-button:hover {
+            background-color: #45a049;
+        }
+
+        /* Result Section */
+        .result {
+            margin-top: 20px;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        /* Animation for 'and' */
+        .and {
+            display: inline-block;
+            animation: colorSwitch 2s infinite;
+            text-decoration: underline;
+        }
+
+        @keyframes colorSwitch {
+            0% { color: red; }
+            50% { color: yellow; }
+            100% { color: red; }
+        }
+
+        .stormy {
+            color: red;
+        }
+
+        .hops {
+            color: yellow;
+        }
+    </style>
+</head>
+<body onload="hideLoadingScreen()">
+
+    <!-- Loading Screen -->
+    <div id="loading-screen">
+        <div class="loader"></div>
+    </div>
+
+    <!-- Main Content -->
+    <div id="content">
+        <div class="navbar">
+            <a href="index.html">Home</a>
+            <a href="Leaks.html">Leaks</a>
+            <a href="Episode.html">Episodes</a>
+            <a href="Credits.html">Credits</a>
+            <a href="Live.html">Live</a>
+            <a href="Fanart.html">Fan Art</a>
+        </div>
+
+        <div class="header">
+            <h1>
+                <span class="stormy">Stormy</span> 
+                <span class="and">and</span> 
+                <span class="hops">Hops</span>: 
+                <span class="duel-rabbit">Fan Art</span>
+            </h1>
+            <p>
+                <span class="official">Fan Art Gallery</span>
+                <span class="website">Created by Fans</span>
+            </p>
+        </div>
+
+        <h2>Submit Your Fan Art</h2>
+        <p>Click the button below to submit your fan art!</p>
+
+        <!-- Submit Button that redirects to Google Forms -->
+        <a href="https://forms.gle/jp4tr4Gw8UBdJLEb9" class="submit-button" target="_blank">Submit Your Fan Art</a>
+
+        <h2>Top Fan Art Picks</h2>
+        <p>Here are the top 3 fan arts selected by Bunny Toon Studio. Vote for your favorite!</p>
+
+        <!-- Fan Art Images -->
+        <div class="fan-art-container">
+            <img src="fanart1.jpg" alt="Fan Art 1" id="art1">
+            <img src="fanart2.jpg" alt="Fan Art 2" id="art2">
+            <img src="fanart3.jpg" alt="Fan Art 3" id="art3">
+        </div>
+
+        <!-- Voting Section -->
+        <div class="vote-section">
+            <button class="vote-button" id="vote1" onclick="vote(1)">Vote for Art 1</button>
+            <button class="vote-button" id="vote2" onclick="vote(2)">Vote for Art 2</button>
+            <button class="vote-button" id="vote3" onclick="vote(3)">Vote for Art 3</button>
+        </div>
+
+        <!-- Result Section -->
+        <div class="result">
+            <!-- No votes yet text has been removed -->
+        </div>
+
+        <div class="footer">
+            <p>Official Sources:</p>
+            <p>X: <a href="https://x.com/BunnytoonStudio" target="_blank">@BunnytoonStudio</a></p>
+            <p>X: <a href="https://x.com/StormyandHops" target="_blank">@StormyandHops</a></p>
+            <p>YouTube: <a href="https://www.youtube.com/@StormyandHops" target="_blank">@StormyandHops</a></p>
+            <p>Cartoon produced by: Bunny Toons Studio</p>
+        </div>
+    </div>
+
+    <script>
+        // Function to hide the loading screen after a delay
+        function hideLoadingScreen() {
+            setTimeout(() => {
+                document.getElementById('loading-screen').style.display = 'none';
+                document.getElementById('content').style.display = 'block';
+            }, 2000); 
+        }
+
+        // Local Storage: Store the state of fan art availability
+        if (!localStorage.getItem('fanArtAvailable')) {
+            localStorage.setItem('fanArtAvailable', 'true');
+        }
+
+        // Voting system
+        let votes = [0, 0, 0]; // Store votes for art1, art2, art3
+        let totalVotes = 0;
+
+        function vote(artId) {
+            if (localStorage.getItem('fanArtAvailable') === 'true') {
+                votes[artId - 1]++; // Increment vote for the selected art
+                totalVotes++;
+
+                let percentages = votes.map(vote => ((vote / totalVotes) * 100).toFixed(2));
+
+                // Update the result text to display percentages
+                document.getElementById('result-text').textContent = 
+                    `Art 1: ${percentages[0]}% | Art 2: ${percentages[1]}% | Art 3: ${percentages[2]}%`;
+            }
+        }
+
+        // Snowfall effect
+        for (let i = 0; i < 100; i++) {
+            let snowflake = document.createElement('div');
+            snowflake.classList.add('snowflake');
+            snowflake.textContent = '❄';
+            snowflake.style.left = Math.random() * 100 + '%';
+            snowflake.style.animationDuration = Math.random() * 5 + 5 + 's';
+            snowflake.style.animationDelay = Math.random() * 5 + 's';
+            document.body.appendChild(snowflake);
+        }
+    </script>
+
+</body>
+</html>
