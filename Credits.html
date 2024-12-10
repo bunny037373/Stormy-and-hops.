@@ -12,6 +12,30 @@
             background-color: #f0f8ff;
             margin: 0;
             text-align: center;
+            position: relative;
+        }
+
+        /* Snow Effect */
+        .snowflake {
+            position: absolute;
+            top: -10px;
+            z-index: 999;
+            pointer-events: none;
+            font-size: 24px;
+            color: #fff;
+            user-select: none;
+            animation: snow 10s linear infinite;
+        }
+
+        @keyframes snow {
+            0% {
+                top: -10px;
+                transform: translateX(0) rotate(0);
+            }
+            100% {
+                top: 100vh;
+                transform: translateX(50vw) rotate(360deg);
+            }
         }
 
         /* Loading Screen */
@@ -123,6 +147,24 @@
 </head>
 <body onload="hideLoadingScreen()">
 
+    <!-- Snow Effect (added by JavaScript) -->
+    <script>
+        const snowflakes = ['❄️']; // Updated snowflake emoji.
+
+        function createSnowflakes() {
+            for (let i = 0; i < 100; i++) {
+                const snowflake = document.createElement('div');
+                snowflake.classList.add('snowflake');
+                snowflake.innerText = snowflakes[Math.floor(Math.random() * snowflakes.length)];
+                snowflake.style.left = `${Math.random() * 100}vw`;
+                snowflake.style.animationDuration = `${Math.random() * 5 + 5}s`;
+                snowflake.style.animationDelay = `${Math.random() * 5}s`;
+                document.body.appendChild(snowflake);
+            }
+        }
+        createSnowflakes();
+    </script>
+
     <!-- Loading Screen -->
     <div id="loading-screen">
         <div class="loader"></div>
@@ -137,6 +179,7 @@
             <a href="Episode.html">Episodes</a>
             <a href="Credits.html">Credits</a>
             <a href="Live.html">Live</a>
+            <a href="Fanart.html">Fan Art</a> <!-- Added Fanart Link -->
         </div>
 
         <!-- Header Section -->
@@ -155,15 +198,15 @@
                 <li>Music by: (behind Bunny Toons Studios)</li>
                 <li>Voice Actors:
                     <ul>
-                        <li>Stormy Bunny – C</li>
-                        <li>Hops Bunny –</li>
-                        <li>Scarlet Bunny – M</li>
-                        <li>Crazy Scientist – R</li>
-                        <li>The Big Dumb Rock – B</li>
-                        <li>Hops Bunny’s Mom – B</li>
-                        <li>Mr. Luck – L</li>
-                        <li>Paul the Hyper Cat – C</li>
-                        <li>Mrs. Diamond – L</li>
+                        <li>Stormy Bunny – caramel</li>
+                        <li>Hops Bunny – we still need a voice actor</li>
+                        <li>Scarlet Bunny – Mary</li>
+                        <li>Crazy Scientist – Rakzo</li>
+                        <li>The Big Dumb Rock – Bunny</li>
+                        <li>Hops Bunny’s Mom – Bria</li>
+                        <li>Mr. Luck – Ernst</li>
+                        <li>Paul the Hyper Cat – Cat Man</li>
+                        <li>Mrs. Diamond – Lucky</li>
                     </ul>
                 </li>
                 <li>Illustrations and Frames by Bunny Toons Studios</li>
