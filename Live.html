@@ -20,27 +20,6 @@
             z-index: 9999;
         }
 
-        /* Red and yellow rotating circle */
-        .loader {
-            border: 12px solid #f0f8ff;
-            border-top: 12px solid red;
-            border-right: 12px solid yellow;
-            border-radius: 50%;
-            width: 120px; /* Increased width */
-            height: 120px; /* Increased height */
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        /* Hide the content initially */
-        #content {
-            display: none;
-        }
-
         /* Main Page Styling */
         body {
             font-family: Arial, sans-serif;
@@ -86,33 +65,6 @@
             color: white;
         }
 
-        .header h1 .stormy { color: red; }
-        .header h1 .and {
-            color: red;
-        }
-
-        .header h1 .and span {
-            color: red;
-        }
-
-        .header h1 .and span:nth-child(2) {
-            color: yellow;
-        }
-
-        .header h1 .hops { color: yellow; }
-        .header h1 .duel-rabbit {
-            color: red;
-            animation: redYellowCycle 2s infinite alternate;
-            text-decoration: underline;
-        }
-
-        @keyframes redYellowCycle {
-            0% { color: red; }
-            50% { color: red; }
-            51% { color: yellow; }
-            100% { color: yellow; }
-        }
-
         .header p {
             font-size: 18px;
             margin-top: 10px;
@@ -120,29 +72,7 @@
         }
 
         .header p .official{ color: red; }
-
-
         .header p .website{ color: yellow; }
-        /* Footer */
-        .footer {
-            margin-top: 40px;
-            padding: 20px;
-            background-color: #333;
-            color: white;
-        }
-
-        .footer p {
-            margin: 5px;
-        }
-
-        .footer a {
-            color: #f2f2f2;
-            text-decoration: none;
-        }
-
-        .footer a:hover {
-            color: #ddd;
-        }
 
         /* Snowfall effect */
         .snowflake {
@@ -183,6 +113,7 @@
             <a href="Episode.html">Episodes</a>
             <a href="Credits.html">Credits</a>
             <a href="Live.html">Live</a>
+            <a href="Fanart.html">Fan Art</a>
         </div>
 
         <div class="header" id="live">
@@ -211,13 +142,31 @@
         </div>
     </div>
 
+    <!-- Snowfall Effect -->
     <script>
         // Function to hide the loading screen after a delay
         function hideLoadingScreen() {
             setTimeout(() => {
                 document.getElementById('loading-screen').style.display = 'none';
                 document.getElementById('content').style.display = 'block';
+                createSnowflakes();
             }, 2000); 
+        }
+
+        // Function to create snowfall effect
+        function createSnowflakes() {
+            const snowflakeCount = 100;
+            const snowContainer = document.body;
+
+            for (let i = 0; i < snowflakeCount; i++) {
+                const snowflake = document.createElement('div');
+                snowflake.classList.add('snowflake');
+                snowflake.textContent = '❄️';
+                snowflake.style.left = `${Math.random() * 100}vw`;
+                snowflake.style.animationDuration = `${Math.random() * 3 + 2}s`; // Randomize falling speed
+                snowflake.style.animationDelay = `${Math.random() * 2}s`; // Randomize delay
+                snowContainer.appendChild(snowflake);
+            }
         }
     </script>
 
