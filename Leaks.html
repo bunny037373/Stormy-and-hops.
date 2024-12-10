@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Episodes - Stormy and Hops</title>
+    <title>Leaks - Stormy and Hops</title>
     <link rel="icon" href="/IMG_1333.jpeg" type="image/jpeg">
     <style>
         /* Loading Screen */
@@ -26,8 +26,8 @@
             border-top: 12px solid red;
             border-right: 12px solid yellow;
             border-radius: 50%;
-            width: 120px;
-            height: 120px;
+            width: 120px; /* Increased width */
+            height: 120px; /* Increased height */
             animation: spin 1s linear infinite;
         }
 
@@ -51,7 +51,7 @@
         }
 
         .navbar {
-            background-color: rgba(0, 0, 0, 0.5);
+            background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
             overflow: hidden;
             padding: 10px 0;
         }
@@ -87,7 +87,18 @@
         }
 
         .header h1 .stormy { color: red; }
-        .header h1 .and { color: red; }
+        .header h1 .and {
+            color: red;
+        }
+
+        .header h1 .and span {
+            color: red;
+        }
+
+        .header h1 .and span:nth-child(2) {
+            color: yellow;
+        }
+
         .header h1 .hops { color: yellow; }
         .header h1 .duel-rabbit {
             color: red;
@@ -108,35 +119,8 @@
             font-weight: bold;
         }
 
-        .header p .official { color: red; }
-        .header p .website { color: yellow; }
-
-        /* Snowfall effect */
-        .snowflake {
-            position: absolute;
-            top: -10px;
-            font-size: 24px;
-            color: #ffffff;
-            user-select: none;
-            animation: fall linear infinite;
-        }
-
-        /* Keyframes for snowfall effect */
-        @keyframes fall {
-            0% { transform: translateY(0); }
-            100% { transform: translateY(100vh); }
-        }
-
-        /* Styling each snowflake with different animation duration and delay */
-        .snowflake:nth-child(1) { left: 10%; animation-duration: 5s; animation-delay: 0s; }
-        .snowflake:nth-child(2) { left: 20%; animation-duration: 7s; animation-delay: 1s; }
-        .snowflake:nth-child(3) { left: 30%; animation-duration: 4s; animation-delay: 2s; }
-        .snowflake:nth-child(4) { left: 40%; animation-duration: 6s; animation-delay: 1.5s; }
-        .snowflake:nth-child(5) { left: 50%; animation-duration: 5s; animation-delay: 0.5s; }
-        .snowflake:nth-child(6) { left: 60%; animation-duration: 8s; animation-delay: 0s; }
-        .snowflake:nth-child(7) { left: 70%; animation-duration: 6s; animation-delay: 2s; }
-        .snowflake:nth-child(8) { left: 80%; animation-duration: 7s; animation-delay: 1s; }
-        .snowflake:nth-child(9) { left: 90%; animation-duration: 5s; animation-delay: 1.5s; }
+        .header p .official{ color: red; }
+        .header p .website{ color: yellow; }
 
         /* Footer */
         .footer {
@@ -144,6 +128,10 @@
             padding: 20px;
             background-color: #333;
             color: white;
+        }
+
+        .footer p {
+            margin: 5px;
         }
 
         .footer a {
@@ -154,71 +142,109 @@
         .footer a:hover {
             color: #ddd;
         }
+
+        /* Snowfall effect */
+        .snowflake {
+            position: absolute;
+            top: -10px;
+            pointer-events: none;
+            z-index: 9999;
+            font-size: 24px;
+            color: #ffffff;
+            user-select: none;
+            animation: fall 5s linear infinite;
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(100vh);
+            }
+        }
+
+        @keyframes alternateRedYellow {
+            0% { color: red; }
+            100% { color: yellow; }
+        }
     </style>
 </head>
 <body onload="hideLoadingScreen()">
 
-    <!-- Loading Screen -->
-    <div id="loading-screen">
-        <div class="loader"></div>
+<!-- Loading Screen -->
+<div id="loading-screen">
+    <div class="loader"></div>
+</div>
+
+<!-- Main Content -->
+<div id="content">
+    <div class="navbar">
+        <a href="index.html">Home</a>
+        <a href="Leaks.html">Leaks</a>
+        <a href="Episode.html">Episodes</a>
+        <a href="Credits.html">Credits</a>
+        <a href="Live.html">Live</a>
+
+        <a href="Fanart.html">Fan Art</a> <!-- Added Fanart Link -->
     </div>
 
-    <!-- Main Content -->
-    <div id="content">
-        <div class="navbar">
-            <a href="index.html">Home</a>
-            <a href="Leaks.html">Leaks</a>
-            <a href="Episode.html">Episodes</a>
-            <a href="Credits.html">Credits</a>
-            <a href="Live.html">Live</a>
-        </div>
-
-        <div class="header" id="episodes">
-            <h1>
-                <span class="stormy">Stormy</span> 
-                <span class="and">And</span> 
-                <span class="hops">Hops:</span> 
-                <span class="duel-rabbit">Episodes</span>
-            </h1>
-            <p>
-                <span class="official">Official</span>
-                <span class="website">Website</span>
-            </p>
-        </div>
-
-        <!-- Snowflakes -->
-        <div class="snowflake">❄️</div>
-        <div class="snowflake">❄️</div>
-        <div class="snowflake">❄️</div>
-        <div class="snowflake">❄️</div>
-        <div class="snowflake">❄️</div>
-        <div class="snowflake">❄️</div>
-        <div class="snowflake">❄️</div>
-        <div class="snowflake">❄️</div>
-        <div class="snowflake">❄️</div>
-
-        <div style="height: 300px; display: flex; align-items: center; justify-content: center; color: black;">
-            <p>Image here</p>
-        </div>
-
-        <div class="footer">
-            <p>Official Sources:</p>
-            <p>X: <a href="https://x.com/BunnytoonStudio" target="_blank">@BunnytoonStudio</a></p>
-            <p>X: <a href="https://x.com/StormyandHops" target="_blank">@StormyandHops</a></p>
-            <p>YouTube: <a href="https://www.youtube.com/@StormyandHops" target="_blank">@StormyandHops</a></p>
-            <p>Cartoon produced by: Bunny Toons Studio</p>
-        </div>
+    <div class="header" id="leaks">
+        <h1>
+            <span class="stormy">Stormy</span> 
+            <span class="and"><span>A</span><span>n</span><span>d</span></span> 
+            <span class="hops">Hops:</span> 
+            <span class="duel-rabbit">Leaks</span>
+        </h1>
+        <p>
+            <span class="official">Official</span>
+            <span class="website">Website</span>
+        </p>
     </div>
 
-    <script>
-        // Function to hide the loading screen after a delay
-        function hideLoadingScreen() {
-            setTimeout(() => {
-                document.getElementById('loading-screen').style.display = 'none';
-                document.getElementById('content').style.display = 'block';
-            }, 2000); 
-        }
-    </script>
+    <div style="height: 300px; display: flex; align-items: center; justify-content: center; color: black;">
+        <!-- Adjusted image size to be small but not too small -->
+        <img src="leaks.png.jpg" alt="Leaks Image" style="width: 120px; height: 120px;">
+    </div>
+
+    <div class="footer">
+        <p>Official Sources:</p>
+        <p>X: <a href="https://x.com/BunnytoonStudio" target="_blank">@BunnytoonStudio</a></p>
+        <p>X: <a href="https://x.com/StormyandHops" target="_blank">@StormyandHops</a></p>
+        <p>YouTube: <a href="https://www.youtube.com/@StormyandHops" target="_blank">@StormyandHops</a></p>
+        <p>Cartoon produced by: Bunny Toons Studio</p>
+    </div>
+</div>
+
+<script>
+    // Function to hide the loading screen after a delay
+    function hideLoadingScreen() {
+        setTimeout(() => {
+            document.getElementById('loading-screen').style.display = 'none';
+            document.getElementById('content').style.display = 'block';
+
+            setInterval(createSnowflakes, 100);
+        }, 2000); // Delay of 2 seconds before showing content
+    }
+
+    // Snowfall effect function
+    function createSnowflakes() {
+        const snowflake = document.createElement('div');
+        
+        document.body.appendChild(snowflake);
+
+        const startPosX = Math.random() * window.innerWidth;
+        const snowflakeSize = Math.random() * 10 + 10;
+
+        snowflake.style.left = `${startPosX}px`;
+        snowflake.style.fontSize = `${snowflakeSize}px`;
+
+        snowflake.style.animationName = 'fall';
+        snowflake.style.animationDuration = `${Math.random() * 3 + 2}s`;
+        snowflake.style.animationTimingFunction = 'linear';
+
+        snowflake.addEventListener('animationend', () => {
+            snowflake.remove();
+        });
+    }
+</script>
 
 </body>
 </html>
