@@ -128,6 +128,7 @@
         .header p .official{ color: red; }
 
         .header p .website{ color: yellow; }
+
         /* Footer */
         .footer {
             margin-top: 40px;
@@ -188,6 +189,8 @@
             <a href="Episode.html">Episodes</a>
             <a href="Credits.html">Credits</a>
             <a href="Live.html">Live</a>
+
+            <a href="Fanart.html">Fan Art</a> <!-- Added Fanart Link -->
         </div>
 
         <div class="header" id="home">
@@ -223,7 +226,22 @@
             setTimeout(() => {
                 document.getElementById('loading-screen').style.display = 'none';
                 document.getElementById('content').style.display = 'block';
+                generateSnowflakes(); // Generate snowflakes once the content loads
             }, 2000); 
+        }
+
+        // Generate snowflakes
+        function generateSnowflakes() {
+            const snowflakeCount = 100;
+            for (let i = 0; i < snowflakeCount; i++) {
+                const snowflake = document.createElement('div');
+                snowflake.classList.add('snowflake');
+                snowflake.textContent = '❄️';
+                snowflake.style.left = Math.random() * 100 + 'vw'; // Random horizontal position
+                snowflake.style.animationDuration = (Math.random() * 3 + 2) + 's'; // Random speed
+                snowflake.style.animationDelay = Math.random() * 3 + 's'; // Random delay
+                document.body.appendChild(snowflake);
+            }
         }
     </script>
 
