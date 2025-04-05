@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>404 Not Found</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #fff0f0;
+      text-align: center;
+      padding: 60px;
+    }
+    h1 {
+      font-size: 38px;
+      color: #cc0000;
+    }
+    p {
+      font-size: 20px;
+    }
+    a {
+      display: inline-block;
+      margin-top: 20px;
+      color: #0066cc;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 18px;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <h1>Oops! The page URL you tried to find was not found.</h1>
+  <p>Error 404</p>
+  <a href="index.html">Go back to the home menu (stormyandhops.com)</a>
+
+  <script>
+    const validPages = [
+      "Blocked.html",
+      "characters.html",
+      "Credits.html",
+      "Episode.html",
+      "Fanart.html",
+      "index.html",
+      "Leaks.html",
+      "Live.html",
+      "QNA.html"
+    ];
+
+    const currentPage = window.location.pathname.split("/").pop();
+
+    if (validPages.includes(currentPage)) {
+      // If it somehow ended up here but it's a valid page, redirect
+      window.location.href = currentPage;
+    } else {
+      console.warn("404: Page not found -", currentPage);
+    }
+  </script>
+</body>
+</html>
