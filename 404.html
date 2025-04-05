@@ -36,27 +36,36 @@
   <a href="index.html">Go back to the home menu (stormyandhops.com)</a>
 
   <script>
-    // List of valid page filenames
+    // List of valid pages
     const validPages = [
-      "index.html",
-      "Characters.html",
-      "Credits.html",
-      "Episode.html",
-      "Fanart.html",
-      "Leaks.html",
-      "Live.html",
-      "QNA.html"
+      "index.html", "Characters.html", "Credits.html", "Episode.html",
+      "Fanart.html", "Leaks.html", "Live.html", "QNA.html"
     ];
 
-    // Get the current page the user tried to access
+    // Redirect if the URL is valid but landed here
     const currentPage = window.location.pathname.split("/").pop();
-
-    // If this page is actually valid (somehow routed wrong), redirect to it
     if (validPages.includes(currentPage)) {
       window.location.href = currentPage;
-    } else {
-      console.warn("404 triggered: Page not found -", currentPage);
     }
+
+    // Blocked countries and regions (by ISO country code)
+    const blockedCountries = ["RU", "CN", "KP", "IR", "YE", "PS", "US"]; // US included for testing
+
+    // Fetch location info using ipapi.co
+    fetch("https://ipapi.co/json/")
+      .then(res => res.json())
+      .then(data => {
+        const country = data.country_code;
+        const city = data.city;
+        
+        // Block if in a banned country, or in Moscow (Russia)
+        if (blockedCountries.includes(country) || (country === "RU" && city.toLowerCase().includes("moscow"))) {
+          window.location.href = "Blocked.html";
+        }
+      })
+      .catch(err => {
+        console.warn("Could not get location data", err);
+      });
   </script>
 </body>
 </html>
