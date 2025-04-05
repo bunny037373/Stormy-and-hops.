@@ -42,30 +42,36 @@
       "Fanart.html", "Leaks.html", "Live.html", "QNA.html"
     ];
 
-    // Redirect if the URL is valid but landed here
     const currentPage = window.location.pathname.split("/").pop();
     if (validPages.includes(currentPage)) {
       window.location.href = currentPage;
     }
 
-    // Blocked countries and regions (by ISO country code)
-    const blockedCountries = ["RU", "CN", "KP", "IR", "YE", "PS", "US"]; // US included for testing
+    // Blocked countries list
+    const blockedCountries = ["RU", "CN", "KP", "IR", "YE", "PS", "US"]; // US = for testing
 
-    // Fetch location info using ipapi.co
+    // Fetch location
     fetch("https://ipapi.co/json/")
-      .then(res => res.json())
+      .then(response => response.json())
       .then(data => {
+        console.log("Geo info:", data);
         const country = data.country_code;
-        const city = data.city;
-        
-        // Block if in a banned country, or in Moscow (Russia)
-        if (blockedCountries.includes(country) || (country === "RU" && city.toLowerCase().includes("moscow"))) {
+        const city = data.city.toLowerCase();
+
+        if (blockedCountries.includes(country)) {
+          console.log(`Blocked country detected: ${country}`);
           window.location.href = "Blocked.html";
+        } else if (country === "RU" && city.includes("moscow")) {
+          console.log(`Blocked city detected: ${city}`);
+          window.location.href = "Blocked.html";
+        } else {
+          console.log("Country allowed:", country, "| City:", city);
         }
       })
-      .catch(err => {
-        console.warn("Could not get location data", err);
+      .catch(error => {
+        console.error("Geolocation API failed:", error);
       });
   </script>
 </body>
+</html>
 </html>
