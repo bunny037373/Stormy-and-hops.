@@ -32,29 +32,30 @@
 </head>
 <body>
   <h1>Oops! The page URL you tried to find was not found.</h1>
-  <p>Error 404</p>
+  <p>Error 404 - Page Not Found</p>
   <a href="index.html">Go back to the home menu (stormyandhops.com)</a>
 
   <script>
+    // List of valid page filenames
     const validPages = [
-      "Blocked.html",
-      "characters.html",
+      "index.html",
+      "Characters.html",
       "Credits.html",
       "Episode.html",
       "Fanart.html",
-      "index.html",
       "Leaks.html",
       "Live.html",
       "QNA.html"
     ];
 
+    // Get the current page the user tried to access
     const currentPage = window.location.pathname.split("/").pop();
 
+    // If this page is actually valid (somehow routed wrong), redirect to it
     if (validPages.includes(currentPage)) {
-      // If it somehow ended up here but it's a valid page, redirect
       window.location.href = currentPage;
     } else {
-      console.warn("404: Page not found -", currentPage);
+      console.warn("404 triggered: Page not found -", currentPage);
     }
   </script>
 </body>
