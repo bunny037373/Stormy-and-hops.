@@ -1,28 +1,36 @@
+
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Characters - Stormy and Hops</title>
   <link rel="icon" href="/IMG_1333.jpeg" type="image/jpeg" />
   <style>
-    /* General Page Styling */
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f0f8ff;
-      margin: 0;
-      text-align: center;
+    :root {
+      --color-red: #ff0000;
+      --color-yellow: #ffd500;
+      --color-blue: #00aaff;
     }
 
-    /* Loading Screen */
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Comic Sans MS', 'Chalkboard SE', sans-serif;
+      background: linear-gradient(to bottom right, #fffbe6, #ffd9d9);
+      color: #222;
+    }
+
     #loading-screen {
       position: fixed;
       top: 0;
       left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: #f0f8ff;
+      width: 100vw;
+      height: 100vh;
+      background-color: var(--color-yellow);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -30,397 +38,350 @@
     }
 
     .loader {
-      border: 12px solid #f0f8ff;
-      border-top: 12px solid red;
-      border-right: 12px solid yellow;
+      border: 10px solid #ffee88;
+      border-top: 10px solid var(--color-red);
+      border-right: 10px solid var(--color-blue);
       border-radius: 50%;
-      width: 120px;
-      height: 120px;
+      width: 90px;
+      height: 90px;
       animation: spin 1s linear infinite;
     }
 
     @keyframes spin {
-      0% {
-        transform: rotate(0deg);
-      }
-      100% {
-        transform: rotate(360deg);
-      }
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
     }
 
-    /* Navbar Styling */
-    .navbar {
-      background-color: rgba(0, 0, 0, 0.5);
-      padding: 10px 0;
+    #content {
+      display: none;
     }
 
-    .navbar a {
-      color: white;
-      padding: 14px 20px;
-      text-decoration: none;
-      font-weight: bold;
+    nav {
+      background-color: var(--color-red);
+      padding: 15px 10px;
+      text-align: center;
+      border-bottom-left-radius: 40px;
+      border-bottom-right-radius: 40px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    }
+
+    nav a {
+      margin: 6px 8px;
       display: inline-block;
-    }
-
-    .navbar a:nth-child(odd) {
-      color: red;
-    }
-
-    .navbar a:nth-child(even) {
-      color: yellow;
-    }
-
-    .navbar a:hover {
-      background-color: #ddd;
-      color: black;
-    }
-
-    /* Header Styling */
-    .header {
-      padding: 50px;
-      background-color: #4CAF50;
+      padding: 10px 18px;
       color: white;
+      font-weight: bold;
+      text-decoration: none;
+      background-color: #ff6666;
+      border-radius: 20px;
+      transition: transform 0.3s, background-color 0.3s;
     }
 
-    /* Character Section */
+    nav a:hover {
+      background-color: var(--color-yellow);
+      color: red;
+      transform: scale(1.1);
+    }
+
+    header {
+      background: linear-gradient(to right, var(--color-red), var(--color-yellow));
+      color: white;
+      text-align: center;
+      padding: 6vh 5vw;
+      border-radius: 40px;
+      margin: 5vh auto;
+      max-width: 1000px;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.2);
+    }
+
+    header h1 {
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: bold;
+      margin: 0;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    }
+
+    .and span:nth-child(odd) {
+      color: var(--color-red);
+    }
+
+    .and span:nth-child(even) {
+      color: var(--color-yellow);
+    }
+
+    .subtitle {
+      font-size: clamp(1.2rem, 2.5vw, 1.5rem);
+      font-weight: bold;
+      color: white;
+      margin-top: 12px;
+      text-shadow: 1px 1px 2px black;
+    }
+
+    .character-section {
+      max-width: 1000px;
+      margin: 6vh auto;
+      padding: 0 20px;
+    }
+
     .character-section h2 {
-      font-size: 28px;
-      margin-top: 20px;
+      font-size: clamp(1.5rem, 4vw, 2rem);
+      color: var(--color-red);
+      text-align: center;
+      margin-bottom: 30px;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
     }
 
     .character {
-      margin-bottom: 10px;
+      margin-bottom: 20px;
+      text-align: center;
     }
 
-    /* Dropdown Buttons */
     .dropdown-btn {
-      background-color: red;
+      background: linear-gradient(to right, var(--color-red), #ff6666);
       color: white;
-      padding: 12px;
+      padding: 15px 25px;
       border: none;
       cursor: pointer;
-      width: 320px;
-      font-size: 18px;
-      border-radius: 8px;
-      transition: background-color 0.3s ease, transform 0.2s ease;
+      font-size: clamp(1rem, 2.5vw, 1.2rem);
+      font-weight: bold;
+      border-radius: 25px;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      min-width: 250px;
+      font-family: 'Comic Sans MS', 'Chalkboard SE', sans-serif;
     }
 
     .dropdown-btn:hover {
-      background-color: yellow;
-      color: black;
+      background: linear-gradient(to right, var(--color-yellow), #ffd500);
+      color: var(--color-red);
       transform: scale(1.05);
     }
 
-    /* Dropdown Animation */
     .dropdown-content {
       max-height: 0;
       overflow: hidden;
-      background-color: #f9f9f9;
-      border: 1px solid #ddd;
-      margin-top: 10px;
-      padding: 0 15px;
-      width: 320px;
-      border-radius: 8px;
-      transition: max-height 0.5s ease, padding 0.5s ease;
+      background: linear-gradient(to bottom right, #fffbe6, #ffd9d9);
+      border: 3px solid var(--color-yellow);
+      margin: 15px auto;
+      padding: 0;
+      max-width: 800px;
+      border-radius: 20px;
+      transition: all 0.5s ease;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     }
 
     .dropdown-content.open {
-      max-height: 2500px;
-      padding: 15px;
-    }
-
-    /* Footer Styling */
-    .footer {
-      margin-top: 40px;
+      max-height: 3000px;
       padding: 20px;
-      background-color: #333;
+    }
+
+    .dropdown-content p {
+      font-size: clamp(0.9rem, 2vw, 1.1rem);
+      line-height: 1.6;
+      color: #333;
+      margin-bottom: 15px;
+    }
+
+    footer {
+      background-color: #660000;
+      color: #ffeb99;
+      padding: 30px 10px;
+      text-align: center;
+      border-top-left-radius: 40px;
+      border-top-right-radius: 40px;
+      font-size: clamp(0.9rem, 2vw, 1rem);
+      box-shadow: inset 0 6px 12px rgba(0,0,0,0.2);
+      margin-top: 6vh;
+    }
+
+    footer a {
       color: white;
+      text-decoration: underline;
     }
 
-    .footer a {
-      color: #f2f2f2;
-      text-decoration: none;
-    }
-
-    .footer a:hover {
-      color: #ddd;
+    footer p {
+      margin: 8px 0;
     }
   </style>
 </head>
 
-<body onload="hideLoadingScreen()">
-  <!-- Loading Screen -->
+<body onload="initLoading()">
+  <!-- Loader -->
   <div id="loading-screen">
     <div class="loader"></div>
   </div>
 
   <!-- Main Content -->
-  <div id="content" style="display: none;">
-    <!-- Navigation Bar -->
-    <div class="navbar">
+  <div id="content">
+    <nav>
       <a href="index.html">Home</a>
       <a href="Leaks.html">Leaks</a>
       <a href="Episode.html">Episodes</a>
       <a href="Characters.html">Characters</a>
+      <a href="Credits.html">Credits</a>
       <a href="Live.html">Live</a>
       <a href="Fanart.html">Fan Art</a>
-    </div>
+    </nav>
 
-    <!-- Header Section -->
-    <div class="header">
-      <h1>Characters</h1>
-      <p>Meet the characters of Stormy and Hops!</p>
-    </div>
+    <header>
+      <h1>
+        <span style="color:var(--color-red)">Stormy</span>
+        <span class="and"><span>A</span><span>n</span><span>d</span></span>
+        <span style="color:var(--color-yellow)">Hops:</span>
+        <span style="text-decoration: underline;">Characters</span>
+      </h1>
+      <p class="subtitle">Meet the characters of our adventure!</p>
+    </header>
 
-    <!-- Character Section -->
     <div class="character-section">
       <h2>Main Characters</h2>
 
-      <!-- Stormy Bunny -->
       <div class="character">
         <button class="dropdown-btn" onclick="toggleDropdown('stormy')">Stormy Bunny</button>
         <div id="stormy" class="dropdown-content">
-          <h3>Stormy Bunny</h3>
-          <p><strong>Species:</strong> Rabbit</p>
-          <p><strong>Gender:</strong> Male</p>
-          <p><strong>First Appearance:</strong> Beginning</p>
-          <p><strong>Voiced By:</strong> (Unknown)</p>
-          <p><strong>Friends:</strong>
-            <ul>
-              <li>Hops</li>
-              <li>The Crazy Scientist (friend)</li>
-              <li>Mr. Lucky (the Flamingo)</li>
-              <li>Mrs. Diamond</li>
-              <li>Paul the hyper cat</li>
-              <li>Hops' mom</li>
-            </ul>
-          </p>
-          <p><strong>Enemies:</strong>
-            <ul>
-              <li>Scarlet Bunny</li>
-              <li>The Stupid Evil Rock Bad Guy (sometimes at a certain extent)</li>
-            </ul>
-          </p>
-          <p><strong>Biography:</strong>
-            Stormy is a 14-year-old red-furred rabbit who is friendly and attractive. He grew up with an unknown past and woke up one day near a bird’s nest, which became his temporary home. With Hops by his side, he embarks on countless adventures. Although his history remains unclear, his adventures with Hops are full of excitement and mystery. He is kind-hearted and a bit of an adventurer.
-          </p>
-          <p><strong>Personality:</strong>
-            Stormy is brave, caring, and always ready to help his friends. While he doesn’t openly talk about his past, his heartwarming attitude makes him beloved by all. He's also a bit naive but learns and grows with each challenge he faces.
-          </p>
-          <p><strong>Relationships:</strong>
-            <strong>Friends:</strong>
-            <ul>
-              <li><strong>Hops Bunny:</strong> Stormy and Hops are a dynamic duo that explores and embarks on adventures together. They met when Stormy was young, and their friendship has grown strong. Hops has a crush on Stormy, but it's inconclusive if he feels the same way. She finds him incredibly pretty with his yellow fur and pink shirt, along with pink hair on top.</li>
-              <li><strong>The Crazy Scientist:</strong> A human who has been a friend to Stormy, helping him by making a red rocket that he uses daily.</li>
-              <li><strong>Scarlet Bunny:</strong> Stormy does not pay attention to Scarlet's crush on him, though Scarlet tries to compete with Hops for his affection.</li>
-              <li><strong>Mr. Lucky (Flamingo):</strong> A teacher with pink feathers and glasses. (no other details)</li>
-              <li><strong>Paul the Silent Cat:</strong> He enjoys hanging out with Paul at school, playing and having fun. Paul only likes to hang out with Stormy and Hops, as he's generally silent and distant from others.</li>
-              <li><strong>Mrs. Diamond:</strong> A dog known for her culinary skills. Stormy, along with Hops, admires her amazing cooking.</li>
-            </ul>
-            <strong>Enemies:</strong>
-            <ul>
-              <li><strong>The Stupid Evil Rock Bad Guy:</strong> Although he thinks of himself as a genius, Stormy and Hops don’t see him as a real threat. He believes he is far more intelligent than he is, often creating chaos without actually succeeding in his plans.</li>
-            </ul>
-          </p>
-          <p><strong>Family:</strong>
-            <ul>
-              <li><strong>Hops Bunny Mom:</strong> A kind and caring rabbit with yellow fur who raised Hops. She is a positive influence on Stormy as well.</li>
-            </ul>
-          </p>
-          <p><strong>Romance:</strong> A developing connection between Stormy and Hops, with each episode bringing them closer. But the romantic dynamics remain a bit unclear as they grow as friends.</p>
-          <p><strong>Quotes:</strong>
-            <ul>
-              <li>"Let's take on this adventure together, Hops!"</li>
-              <li>"I never knew how much fun we could have until I met you, Hops."</li>
-            </ul>
-          </p>
+          <p><strong>Species:</strong> Rabbit | <strong>Gender:</strong> Male | <strong>First Appearance:</strong> Beginning</p>
+          <p><strong>Stormy Bunny</strong> is a red rabbit who wears an orange shirt with an "S" on it. He's 14 years old and embarks on exciting adventures with his best friend Hops. Stormy uses a red rocket (made by The Crazy Scientist) for daily adventures and exploration.</p>
+          <p><strong>Personality:</strong> Stormy is brave, adventurous, and always ready to explore new places. He's kind-hearted and loyal to his friends, though he's unaware that both Hops and Scarlet have crushes on him.</p>
+          <p><strong>Friends:</strong> Hops Bunny (best friend), The Crazy Scientist, Mr. Lucky (Flamingo), Mrs. Diamond, Paul the Hyper Cat, Hops' Mom</p>
+          <p><strong>Enemies:</strong> Scarlet Bunny (sometimes), The Stupid Evil Rock Bad Guy (occasionally)</p>
+          <p><strong>Romance:</strong> A developing romantic connection with Hops Bunny grows stronger with each episode!</p>
         </div>
       </div>
 
-      <!-- Hops Bunny -->
       <div class="character">
         <button class="dropdown-btn" onclick="toggleDropdown('hops')">Hops Bunny</button>
         <div id="hops" class="dropdown-content">
-          <h3>Hops Bunny</h3>
-          <p><strong>Species:</strong> Rabbit</p>
-          <p><strong>Gender:</strong> Female</p>
-          <p><strong>First Appearance:</strong> Beginning</p>
-          <p><strong>Voiced By:</strong> (Unknown)</p>
-          <p><strong>Friends:</strong>
-            <ul>
-              <li>Stormy</li>
-              <li>The Crazy Scientist</li>
-              <li>Mr. Lucky (the Flamingo)</li>
-              <li>Mrs. Diamond</li>
-              <li>Paul the silent cat</li>
-            </ul>
-          </p>
-          <p><strong>Enemies:</strong>
-            <ul>
-              <li>Scarlet Bunny</li>
-              <li>The Stupid Evil Rock Bad Guy (sometimes)</li>
-            </ul>
-          </p>
-          <p><strong>Biography:</strong>
-            Hops is a 14-year-old, yellow rabbit with pink hair, who is sweet, caring, and intelligent. She has a crush on Stormy, though he is unaware of her feelings. Hops enjoys adventures with Stormy and has a rivalry with Scarlet Bunny, who also likes Stormy.
-          </p>
-          <p><strong>Personality:</strong>
-            Hops is known for her kindness and intelligence. She’s always supportive of Stormy, and though she can be frustrated by Scarlet Bunny's attempts to win Stormy’s heart, she remains strong.
-          </p>
-          <p><strong>Relationships:</strong>
-            <strong>Friends:</strong>
-            <ul>
-              <li><strong>Stormy Bunny:</strong> Hops and Stormy are inseparable companions. While Stormy is oblivious to her feelings, Hops quietly supports him through every adventure they face.</li>
-              <li><strong>The Crazy Scientist:</strong> The Crazy Scientist is one of Hops’ allies, although she doesn’t quite understand all the scientist's odd inventions.</li>
-              <li><strong>Mr. Lucky (Flamingo):</strong> A school teacher, admired by Hops for his wisdom, despite his peculiarities.</li>
-              <li><strong>Mrs. Diamond:</strong> A wise older figure who offers guidance, especially on culinary topics. Hops looks up to her.</li>
-              <li><strong>Paul the Silent Cat:</strong> A quiet companion who often just observes rather than actively engaging in adventures.</li>
-            </ul>
-            <strong>Enemies:</strong>
-            <ul>
-              <li><strong>Scarlet Bunny:</strong> Hops and Scarlet Bunny are rivals in love, with Hops feeling frustrated by Scarlet’s attempts to get Stormy’s attention.</li>
-              <li><strong>The Stupid Evil Rock Bad Guy:</strong> Though not always an immediate threat, Hops still has to outsmart him at times.</li>
-            </ul>
-          </p>
-          <p><strong>Romance:</strong> Hops’ crush on Stormy drives much of her actions, though she tries to hide her feelings. There is a deep bond between them, but the direction of their relationship remains in the air.</p>
-          <p><strong>Quotes:</strong>
-            <ul>
-              <li>"Adventures are always better when we're together, Stormy!"</li>
-              <li>"You can't force someone's heart, Scarlet. Love should come naturally."</li>
-            </ul>
-          </p>
+          <p><strong>Species:</strong> Rabbit | <strong>Gender:</strong> Female | <strong>First Appearance:</strong> Beginning</p>
+          <p><strong>Hops Bunny</strong> is a 14-year-old yellow rabbit with pink hair who wears a pink shirt and baby blue skirt. She's Stormy's adventure companion and has a secret crush on him. She finds him incredibly pretty and loves going on adventures together.</p>
+          <p><strong>Personality:</strong> Hops is sweet, caring, kind, and intelligent. She gets along with most characters and is known for her determination and strength, even when facing challenges. She's the voice of reason in their adventures.</p>
+          <p><strong>Friends:</strong> Stormy Bunny (crush), The Crazy Scientist, Mr. Lucky (Flamingo), Mrs. Diamond, Paul the Hyper Cat, her Mom</p>
+          <p><strong>Enemies:</strong> Scarlet Bunny (nemesis), The Stupid Evil Rock Bad Guy (sometimes)</p>
+          <p><strong>Famous Quote:</strong> "Adventures are always better when we're together, Stormy!"</p>
+          <p><strong>Romance:</strong> Has a crush on Stormy, and their romantic connection develops throughout the series!</p>
+        </div>
+      </div>
+
+      <div class="character">
+        <button class="dropdown-btn" onclick="toggleDropdown('scarlet')">Scarlet Bunny</button>
+        <div id="scarlet" class="dropdown-content">
+          <p><strong>Species:</strong> Rabbit | <strong>Gender:</strong> Female | <strong>First Appearance:</strong> Beginning</p>
+          <p><strong>Scarlet Bunny</strong> is a 14-year-old purple rabbit who wears a violet shirt and blue skirt. She has a crush on Stormy and constantly tries to win his attention, often causing trouble for Hops in the process.</p>
+          <p><strong>Personality:</strong> Scarlet can be mean and manipulative, except when it comes to Stormy. She's determined to get what she wants and doesn't like anyone who helps Hops. She's a bit crazy and persistent in her schemes.</p>
+          <p><strong>Friends:</strong> Stormy (sometimes), The Stupid Evil Rock Bad Guy</p>
+          <p><strong>Enemies:</strong> Hops Bunny (main rival), Paul the Hyper Cat, Mr. Lucky (Flamingo), The Crazy Scientist, Mrs. Diamond</p>
+          <p><strong>Romance:</strong> Has a crush on Stormy and competes with Hops for his attention. May have feelings developing with The Stupid Evil Rock Bad Guy.</p>
+        </div>
+      </div>
+
+      <div class="character">
+        <button class="dropdown-btn" onclick="toggleDropdown('preston')">Preston (The Stupid Evil Rock Bad Guy)</button>
+        <div id="preston" class="dropdown-content">
+          <p><strong>Species:</strong> Rock | <strong>Gender:</strong> Male | <strong>First Appearance:</strong> Beginning</p>
+          <p><strong>Preston</strong> thinks of himself as an evil genius, but he's not quite as smart as he believes. Though he considers himself a threat, Hops and Stormy don't see him as particularly dangerous. He secretly has a crush on Scarlet Bunny.</p>
+          <p><strong>Personality:</strong> Preston is not very bright despite thinking he's a genius. He's more of a comic relief character who provides amusing situations rather than real danger.</p>
+          <p><strong>Friends:</strong> Scarlet Bunny (crush)</p>
+          <p><strong>Enemies:</strong> Stormy and Hops (though not very effectively), Paul the Hyper Cat (when annoyed)</p>
+          <p><strong>Romance:</strong> Has a secret crush on Scarlet Bunny and may form an "evil pair" with her, though his stupidity often gets in the way.</p>
+        </div>
+      </div>
+
+      <div class="character">
+        <button class="dropdown-btn" onclick="toggleDropdown('paul')">Paul the Hyper Cat</button>
+        <div id="paul" class="dropdown-content">
+          <p><strong>Species:</strong> Cat | <strong>Gender:</strong> Male | <strong>First Appearance:</strong> Episode 1: A New Toon Beginning</p>
+          <p><strong>Paul the Hyper Cat</strong> is a 13-year-old orange cat known for his boundless energy and wild imagination. Originally a YouTube sensation, he joined the cartoon and constantly acts like he's in a livestream, talking to imaginary fans.</p>
+          <p><strong>Personality:</strong> Paul is hyperactive, enthusiastic, dramatic, and theatrical. He talks fast, moves fast, and thinks even faster. He's convinced he's internet famous and loves pulling off "epic" stunts. Despite his chaos, he's kind-hearted and surprisingly helpful when needed.</p>
+          <p><strong>Friends:</strong> Stormy Bunny, Hops Bunny, The Crazy Scientist, Mr. Lucky, Mrs. Diamond</p>
+          <p><strong>Enemies:</strong> Scarlet Bunny (occasionally), Preston (when annoyed)</p>
+          <p><strong>Special Note:</strong> Based on the real Paul the Hyper Cat YouTube channel and voiced by Cat Man (the channel owner)!</p>
+        </div>
+      </div>
+
+      <div class="character">
+        <button class="dropdown-btn" onclick="toggleDropdown('katie')">Katie the Deer</button>
+        <div id="katie" class="dropdown-content">
+          <p><strong>Species:</strong> Deer | <strong>Gender:</strong> Female</p>
+          <p><strong>Katie the Deer</strong> is a white deer with antlers who's known for being a "smart cookie." She's part of the cheerleading department at Toons Springs University.</p>
+          <p><strong>Personality:</strong> Katie is intelligent, kind, and academically oriented. She brings a different perspective to the group with her university background and cheerleading experience.</p>
+          <p><strong>Special Role:</strong> Represents the academic side of their world and shows that adventure characters can also excel in school activities!</p>
         </div>
       </div>
     </div>
+
+    <div class="character-section">
+      <h2>Supporting Characters</h2>
+
+      <div class="character">
+        <button class="dropdown-btn" onclick="toggleDropdown('scientist')">The Crazy Scientist</button>
+        <div id="scientist" class="dropdown-content">
+          <p><strong>Species:</strong> Human | <strong>Gender:</strong> Male</p>
+          <p><strong>The Crazy Scientist</strong> is a human who wears a white lab coat and is a loyal friend to both Stormy and Hops. He's the genius behind Stormy's red rocket that they use for daily adventures.</p>
+          <p><strong>Personality:</strong> Inventive, helpful, and always ready to create gadgets to help his rabbit friends on their adventures.</p>
+          <p><strong>Role:</strong> The tech support of the group, providing vehicles and inventions for their adventures.</p>
+        </div>
+      </div>
+
+      <div class="character">
+        <button class="dropdown-btn" onclick="toggleDropdown('lucky')">Mr. Lucky (Flamingo)</button>
+        <div id="lucky" class="dropdown-content">
+          <p><strong>Species:</strong> Flamingo | <strong>Gender:</strong> Male</p>
+          <p><strong>Mr. Lucky</strong> is a teacher with pink feathers and glasses who works at the school attended by our main characters.</p>
+          <p><strong>Personality:</strong> Professional educator who helps guide the characters in their learning journey.</p>
+          <p><strong>Role:</strong> Represents the educational aspect of the characters' lives outside of their adventures.</p>
+        </div>
+      </div>
+
+      <div class="character">
+        <button class="dropdown-btn" onclick="toggleDropdown('diamond')">Mrs. Diamond</button>
+        <div id="diamond" class="dropdown-content">
+          <p><strong>Species:</strong> Dog | <strong>Gender:</strong> Female</p>
+          <p><strong>Mrs. Diamond</strong> is a brown dog with black spots who's known for her incredible culinary skills. She runs a bakery that the characters visit.</p>
+          <p><strong>Personality:</strong> Warm, welcoming, and passionate about cooking. Hops especially admires her amazing food.</p>
+          <p><strong>Role:</strong> The community's baker who provides delicious treats and a cozy gathering place for the characters.</p>
+        </div>
+      </div>
+
+      <div class="character">
+        <button class="dropdown-btn" onclick="toggleDropdown('hopsmom')">Hops' Mom</button>
+        <div id="hopsmom" class="dropdown-content">
+          <p><strong>Species:</strong> Rabbit | <strong>Gender:</strong> Female</p>
+          <p><strong>Hops' Mom</strong> is a kind and caring rabbit with yellow fur, just like her daughter. She's supportive of Hops' friendship with Stormy and their adventures.</p>
+          <p><strong>Personality:</strong> Loving, nurturing, and understanding. She provides a stable home base for the adventurous characters.</p>
+          <p><strong>Role:</strong> The parental figure who offers wisdom and support when the young adventurers need guidance.</p>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      <p><strong>Official Sources:</strong></p>
+      <p>
+        X: <a href="https://x.com/BunnytoonStudio" target="_blank">@BunnytoonStudio</a><br />
+        X: <a href="https://x.com/StormyandHops" target="_blank">@StormyandHops</a><br />
+        YouTube: <a href="https://www.youtube.com/@StormyandHops" target="_blank">@StormyandHops</a>
+      </p>
+      <p>Cartoon produced by: Bunny Toons Studio</p>
+    </footer>
   </div>
 
-<!-- Add this right below Hops Bunny section in your existing HTML -->
-
-<!-- Scarlet Bunny -->
-<div class="character">
-  <button class="dropdown-btn" onclick="toggleDropdown('scarlet')">Scarlet Bunny</button>
-  <div id="scarlet" class="dropdown-content">
-    <h3>Scarlet Bunny</h3>
-    <p><strong>Species:</strong> Rabbit</p>
-    <p><strong>Gender:</strong> Female</p>
-    <p><strong>First Appearance:</strong> Beginning</p>
-    <p><strong>Voiced By:</strong> (Unknown)</p>
-    <p><strong>Friends:</strong>
-      <ul>
-        <li>Stormy (sometimes)</li>
-        <li>The Stupid Evil Rock Bad Guy</li>
-      </ul>
-    </p>
-    <p><strong>Enemies:</strong>
-      <ul>
-        <li>Hops Bunny</li>
-        <li>Paul the Silent Cat</li>
-        <li>Mr. Lucky (the Flamingo)</li>
-        <li>The Crazy Scientist</li>
-        <li>Mrs. Diamond</li>
-      </ul>
-    </p>
-    <p><strong>Biography:</strong>
-      Scarlet is a 14-year-old purple rabbit who wears a violet shirt, a blue skirt, and has a red mouth. She has a crush on Stormy Bunny and constantly tries to win his attention, even though he is unaware of her feelings. Her rival is Hops Bunny, who also likes Stormy. Scarlet isn’t very nice, and her obsession often leads her into trouble.
-    </p>
-    <p><strong>Personality:</strong>
-      Scarlet is mean, especially toward Hops and the others, but oddly kind to Stormy. She wants to be part of adventures just to get closer to him, though she’s a bit wild and unstable. She doesn’t like the Crazy Scientist because he supports Hops.
-    </p>
-    <p><strong>Relationships:</strong>
-      <strong>Stormy Bunny:</strong> Scarlet is always trying to separate Stormy from Hops. Though she appears in almost every episode, Stormy and Hops usually try to escape her.  
-      <br><br>
-      <strong>Hops Bunny:</strong> The rivalry is fierce. Scarlet constantly tries to steal Stormy’s attention, leading to frequent conflicts with Hops. She often mocks Hops and has even said, “I hate that rabbit so much!”
-      <br><br>
-      <strong>The Crazy Scientist:</strong> A human ally of Hops and Stormy. Scarlet dislikes him for helping Hops and has no interest in his inventions.
-      <br><br>
-      <strong>Mr. Lucky (Flamingo):</strong> Scarlet doesn't like school or Mr. Lucky. She finds him annoying.
-      <br><br>
-      <strong>Paul the Silent Cat:</strong> Scarlet doesn’t get along with Paul. He never talks to her, likely because of how she treats Hops.
-      <br><br>
-      <strong>Mrs. Diamond:</strong> Scarlet rarely visits her bakery and finds her annoying.
-      <br><br>
-      <strong>The Stupid Evil Rock Bad Guy:</strong> Scarlet feels like he might have a crush on her. She enjoys his evil nature, but finds him too dumb to be useful.
-    </p>
-    <p><strong>Family:</strong> Unknown</p>
-    <p><strong>Romance:</strong>
-      Scarlet and the Evil Rock may be an evil pair, but Scarlet doesn’t seem sure about her feelings. She might like him—or maybe not.
-    </p>
-  </div>
-</div>
-
-<!-- Preston (The Big Dumb Rock) -->
-<div class="character">
-  <button class="dropdown-btn" onclick="toggleDropdown('preston')">Preston (The Big Dumb Rock)</button>
-  <div id="preston" class="dropdown-content">
-    <h3>Preston (The Big Dumb Rock)</h3>
-    <p><strong>Species:</strong> Rock (literally just a rock that can talk and is dumb)</p>
-    <p><strong>Gender:</strong> Male</p>
-    <p><strong>First Appearance:</strong> Beginning</p>
-    <p><strong>Voiced By:</strong> (Unknown)</p>
-    <p><strong>Friends:</strong>
-      <ul>
-        <li>Stormy (sometimes)</li>
-        <li>Hops Bunny (sometimes)</li>
-        <li>Scarlet Bunny</li>
-      </ul>
-    </p>
-    <p><strong>Enemies:</strong>
-      <ul>
-        <li>Stormy Bunny (sometimes)</li>
-        <li>Hops Bunny (sometimes)</li>
-        <li>Paul the Silent Cat</li>
-        <li>Mr. Lucky (the Flamingo)</li>
-        <li>The Crazy Scientist</li>
-        <li>Mrs. Diamond</li>
-      </ul>
-    </p>
-    <p><strong>Biography:</strong>
-      A rock that thinks he’s evil, but is really just a harmless, goofy lump of stone.
-    </p>
-    <p><strong>Personality:</strong>
-      Preston believes he’s a genius evil villain, but in reality, he’s clueless. He says nonsense like "1 + 1 = triangle" and thinks the Earth is flat. He’s delusional, dramatic, and hugs people while pretending to be sinister.
-    </p>
-    <p><strong>Relationships:</strong>
-      <strong>Stormy Bunny:</strong> Stormy tries to hug Preston all the time, which drives him crazy. He often calls Stormy “stupid rabbit.”
-      <br><br>
-      <strong>Hops Bunny:</strong> Hops doesn’t treat him like a villain, which frustrates him. He complains that she calls him “just a dumb rock” when he wants to be seen as evil.
-      <br><br>
-      <strong>The Crazy Scientist:</strong> Preston doesn’t care much about him, but knows he helps Stormy and Hops.
-      <br><br>
-      <strong>Mr. Lucky (Flamingo):</strong> Mr. Lucky always stops Preston’s chaos at school, which makes Preston feel like a failure.
-      <br><br>
-      <strong>Paul the Silent Cat:</strong> Paul never talks to Preston and seems to ignore him entirely. Preston yells about being an “evil villain” but Paul doesn’t care.
-      <br><br>
-      <strong>Mrs. Diamond:</strong> Preston thinks her food is okay. He sometimes visits her bakery and grabs a snack.
-      <br><br>
-      <strong>Scarlet Bunny:</strong> Preston really likes Scarlet. He says she’s amazing and doesn’t think she’s mean. He has a big crush on her.
-    </p>
-    <p><strong>Family:</strong> Unknown</p>
-    <p><strong>Romance:</strong>
-      Preston thinks he and Scarlet make a great evil pair, but he’s unsure if she actually likes him back. Still, he has strong feelings for her.
-    </p>
-  </div>
-</div>
-
-  <!-- Footer -->
-  <div class="footer">
-    <p>&copy; 2025 Stormy and Hops Adventure. All rights reserved. <a href="index.html">Back to Home</a></p>
-  </div>
-
-  <!-- Script for Dropdowns -->
   <script>
     function toggleDropdown(character) {
       const content = document.getElementById(character);
       content.classList.toggle("open");
     }
 
-    function hideLoadingScreen() {
-      setTimeout(function () {
-        document.getElementById("loading-screen").style.display = "none";
-        document.getElementById("content").style.display = "block";
-      }, 2000); // Simulate loading time
+    function showContent() {
+      const loader = document.getElementById('loading-screen');
+      const content = document.getElementById('content');
+      if (loader.style.display !== 'none') {
+        loader.style.display = 'none';
+        content.style.display = 'block';
+      }
+    }
+
+    function initLoading() {
+      setTimeout(showContent, 2000);
+      setTimeout(showContent, 6000);
     }
   </script>
 </body>
-
 </html>
