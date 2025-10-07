@@ -1,237 +1,312 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Credits - Stormy and Hops</title>
-    <link rel="icon" href="/IMG_1333.jpeg" type="image/jpeg">
-    <style>
-        /* General Page Styling */
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f0f8ff;
-            margin: 0;
-            text-align: center;
-            position: relative;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Credits - Stormy and Hops</title>
+  <link rel="icon" href="/IMG_1333.jpeg" type="image/jpeg" />
+  <style>
+    :root {
+      --color-red: #ff0000;
+      --color-yellow: #ffd500;
+      --color-blue: #00aaff;
+    }
 
-        /* Snow Effect */
-        .snowflake {
-            position: absolute;
-            top: -10px;
-            z-index: 999;
-            pointer-events: none;
-            font-size: 24px;
-            color: #fff;
-            user-select: none;
-            animation: snow 10s linear infinite;
-        }
+    * {
+      box-sizing: border-box;
+    }
 
-        @keyframes snow {
-            0% {
-                top: -10px;
-                transform: translateX(0) rotate(0);
-            }
-            100% {
-                top: 100vh;
-                transform: translateX(50vw) rotate(360deg);
-            }
-        }
+    body {
+      margin: 0;
+      font-family: 'Comic Sans MS', 'Chalkboard SE', sans-serif;
+      background: linear-gradient(to bottom right, #fffbe6, #ffd9d9);
+      color: #222;
+      overflow-x: hidden;
+    }
 
-        /* Loading Screen */
-        #loading-screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: #f0f8ff;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 9999;
-        }
+    #loading-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: var(--color-yellow);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+    }
 
-        .loader {
-            border: 12px solid #f0f8ff;
-            border-top: 12px solid red;
-            border-right: 12px solid yellow;
-            border-radius: 50%;
-            width: 120px;
-            height: 120px;
-            animation: spin 1s linear infinite;
-        }
+    .loader {
+      border: 10px solid #ffee88;
+      border-top: 10px solid var(--color-red);
+      border-right: 10px solid var(--color-blue);
+      border-radius: 50%;
+      width: 90px;
+      height: 90px;
+      animation: spin 1s linear infinite;
+    }
 
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
 
-        /* Navbar Styling */
-        .navbar {
-            background-color: rgba(0, 0, 0, 0.5);
-            padding: 10px 0;
-        }
+    #content {
+      display: none;
+    }
 
-        .navbar a {
-            color: white;
-            padding: 14px 20px;
-            text-decoration: none;
-            font-weight: bold;
-            display: inline-block;
-        }
+    nav {
+      background-color: var(--color-red);
+      padding: 15px 10px;
+      text-align: center;
+      border-bottom-left-radius: 40px;
+      border-bottom-right-radius: 40px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    }
 
-        .navbar a:nth-child(odd) { color: red; }
-        .navbar a:nth-child(even) { color: yellow; }
+    nav a {
+      margin: 6px 8px;
+      display: inline-block;
+      padding: 10px 18px;
+      color: white;
+      font-weight: bold;
+      text-decoration: none;
+      background-color: #ff6666;
+      border-radius: 20px;
+      transition: transform 0.3s, background-color 0.3s;
+    }
 
-        .navbar a:hover {
-            background-color: #ddd;
-            color: black;
-        }
+    nav a:hover {
+      background-color: var(--color-yellow);
+      color: red;
+      transform: scale(1.1);
+    }
 
-        /* Header Styling */
-        .header {
-            padding: 50px;
-            background-color: #4CAF50;
-            color: white;
-        }
+    header {
+      background: linear-gradient(to right, var(--color-red), var(--color-yellow));
+      color: white;
+      text-align: center;
+      padding: 6vh 5vw;
+      border-radius: 40px;
+      margin: 5vh auto;
+      max-width: 1000px;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.2);
+    }
 
-        .header h1 {
-            font-size: 36px;
-            margin: 0;
-        }
+    header h1 {
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: bold;
+      margin: 0;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    }
 
-        .header p {
-            font-size: 18px;
-            margin-top: 10px;
-            font-weight: bold;
-        }
+    .and span:nth-child(odd) {
+      color: var(--color-red);
+    }
 
-        /* Credits Section */
-        .credits-list h2 {
-            font-size: 28px;
-            margin-top: 20px;
-        }
+    .and span:nth-child(even) {
+      color: var(--color-yellow);
+    }
 
-        .credits-list ul {
-            list-style-type: none;
-            padding: 0;
-        }
+    .subtitle {
+      font-size: clamp(1.2rem, 2.5vw, 1.5rem);
+      font-weight: bold;
+      color: white;
+      margin-top: 12px;
+      text-shadow: 1px 1px 2px black;
+    }
 
-        .credits-list li {
-            font-size: 18px;
-            margin: 10px 0;
-        }
+    .credits-container {
+      max-width: 1000px;
+      margin: 6vh auto;
+      padding: 0 20px;
+      text-align: center;
+    }
 
-        /* Footer Styling */
-        .footer {
-            margin-top: 40px;
-            padding: 20px;
-            background-color: #333;
-            color: white;
-        }
+    .credits-section {
+      background: linear-gradient(to bottom right, #fffbe6, #ffd9d9);
+      border: 3px solid var(--color-yellow);
+      border-radius: 20px;
+      padding: 30px;
+      margin: 20px auto;
+      max-width: 800px;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+    }
 
-        .footer p {
-            margin: 5px;
-        }
+    .credits-section h2 {
+      font-size: clamp(1.5rem, 4vw, 2rem);
+      color: var(--color-red);
+      margin-bottom: 20px;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+    }
 
-        .footer a {
-            color: #f2f2f2;
-            text-decoration: none;
-        }
+    .credits-section p {
+      font-size: clamp(0.9rem, 2vw, 1.1rem);
+      line-height: 1.6;
+      color: #333;
+      margin-bottom: 15px;
+    }
 
-        .footer a:hover {
-            color: #ddd;
-        }
-    </style>
+    .credits-section strong {
+      color: var(--color-red);
+    }
+
+    .credits-section a {
+      color: var(--color-blue);
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .credits-section a:hover {
+      text-decoration: underline;
+    }
+
+    /* Snowflake animation */
+    .snowflake {
+      position: fixed;
+      top: -10px;
+      font-size: 1.5em;
+      pointer-events: none;
+      animation: fall linear infinite;
+      z-index: 1;
+    }
+
+    @keyframes fall {
+      to {
+        transform: translateY(100vh);
+      }
+    }
+
+    footer {
+      background-color: #660000;
+      color: #ffeb99;
+      padding: 30px 10px;
+      text-align: center;
+      border-top-left-radius: 40px;
+      border-top-right-radius: 40px;
+      font-size: clamp(0.9rem, 2vw, 1rem);
+      box-shadow: inset 0 6px 12px rgba(0,0,0,0.2);
+      margin-top: 6vh;
+    }
+
+    footer a {
+      color: white;
+      text-decoration: underline;
+    }
+
+    footer p {
+      margin: 8px 0;
+    }
+  </style>
 </head>
-<body onload="hideLoadingScreen()">
 
-    <!-- Snow Effect (added by JavaScript) -->
-    <script>
-        const snowflakes = ['❄️']; // Updated snowflake emoji.
+<body onload="initLoading()">
+  <!-- Loader -->
+  <div id="loading-screen">
+    <div class="loader"></div>
+  </div>
 
-        function createSnowflakes() {
-            for (let i = 0; i < 100; i++) {
-                const snowflake = document.createElement('div');
-                snowflake.classList.add('snowflake');
-                snowflake.innerText = snowflakes[Math.floor(Math.random() * snowflakes.length)];
-                snowflake.style.left = `${Math.random() * 100}vw`;
-                snowflake.style.animationDuration = `${Math.random() * 5 + 5}s`;
-                snowflake.style.animationDelay = `${Math.random() * 5}s`;
-                document.body.appendChild(snowflake);
-            }
-        }
+  <!-- Main Content -->
+  <div id="content">
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="Leaks.html">Leaks</a>
+      <a href="Episode.html">Episodes</a>
+      <a href="Characters.html">Characters</a>
+      <a href="Credits.html">Credits</a>
+      <a href="Live.html">Live</a>
+      <a href="Fanart.html">Fan Art</a>
+    </nav>
+
+    <header>
+      <h1>
+        <span style="color:var(--color-red)">Stormy</span>
+        <span class="and"><span>A</span><span>n</span><span>d</span></span>
+        <span style="color:var(--color-yellow)">Hops:</span>
+        <span style="text-decoration: underline;">Credits</span>
+      </h1>
+      <p class="subtitle">The amazing team behind our adventures!</p>
+    </header>
+
+    <div class="credits-container">
+      <div class="credits-section">
+        <h2>Production Team</h2>
+        <p><strong>Created by:</strong> Bunny Toons Studio</p>
+        <p><strong>Executive Producer:</strong> The Creative Team at Bunny Toons</p>
+        <p><strong>Animation Director:</strong> Lead Animator Team</p>
+        <p><strong>Voice Acting:</strong> Talented Voice Artists</p>
+        <p><strong>Music & Sound:</strong> Audio Production Team</p>
+      </div>
+
+      <div class="credits-section">
+        <h2>Special Thanks</h2>
+        <p><strong>Community Support:</strong> All our amazing fans who follow our journey!</p>
+        <p><strong>Social Media:</strong> Our followers on X and YouTube</p>
+        <p><strong>Beta Testers:</strong> Early viewers who helped shape our content</p>
+        <p><strong>Inspiration:</strong> Classic animation and modern storytelling</p>
+      </div>
+
+      <div class="credits-section">
+        <h2>Official Channels</h2>
+        <p><strong>Primary X Account:</strong> <a href="https://x.com/StormyandHops" target="_blank">@StormyandHops</a></p>
+        <p><strong>Studio X Account:</strong> <a href="https://x.com/BunnytoonStudio" target="_blank">@BunnytoonStudio</a></p>
+        <p><strong>YouTube Channel:</strong> <a href="https://www.youtube.com/@StormyandHops" target="_blank">@StormyandHops</a></p>
+        <p><strong>Official Website:</strong> This site you're currently visiting!</p>
+      </div>
+
+      <div class="credits-section">
+        <h2>Copyright & Legal</h2>
+        <p><strong>Copyright:</strong> © 2025 Bunny Toons Studio. All rights reserved.</p>
+        <p><strong>Characters:</strong> Stormy, Hops, Scarlet, and Preston are original creations</p>
+        <p><strong>Distribution:</strong> Content distributed through official channels only</p>
+        <p><strong>Contact:</strong> Reach out through our official social media channels</p>
+      </div>
+    </div>
+
+    <footer>
+      <p><strong>Official Sources:</strong></p>
+      <p>
+        X: <a href="https://x.com/BunnytoonStudio" target="_blank">@BunnytoonStudio</a><br />
+        X: <a href="https://x.com/StormyandHops" target="_blank">@StormyandHops</a><br />
+        YouTube: <a href="https://www.youtube.com/@StormyandHops" target="_blank">@StormyandHops</a>
+      </p>
+      <p>Cartoon produced by: Bunny Toons Studio</p>
+    </footer>
+  </div>
+
+  <script>
+    // Snowfall effect
+    function createSnowflakes() {
+      const snowflakeCount = 50;
+      const snowContainer = document.body;
+
+      for (let i = 0; i < snowflakeCount; i++) {
+        const snowflake = document.createElement('div');
+        snowflake.classList.add('snowflake');
+        snowflake.textContent = '❄️';
+        snowflake.style.left = `${Math.random() * 100}vw`;
+        snowflake.style.animationDuration = `${Math.random() * 3 + 5}s`;
+        snowflake.style.animationDelay = `${Math.random() * 5}s`;
+        snowContainer.appendChild(snowflake);
+      }
+    }
+
+    function showContent() {
+      const loader = document.getElementById('loading-screen');
+      const content = document.getElementById('content');
+      if (loader.style.display !== 'none') {
+        loader.style.display = 'none';
+        content.style.display = 'block';
         createSnowflakes();
-    </script>
+      }
+    }
 
-    <!-- Loading Screen -->
-    <div id="loading-screen">
-        <div class="loader"></div>
-    </div>
-
-    <!-- Main Content -->
-    <div id="content" style="display: none;">
-        <!-- Navigation Bar -->
-        <div class="navbar">
-            <a href="index.html">Home</a>
-            <a href="Leaks.html">Leaks</a>
-            <a href="Episode.html">Episodes</a>
-            <a href="Credits.html">Credits</a>
-            <a href="Live.html">Live</a>
-            <a href="Fanart.html">Fan Art</a> <!-- Added Fanart Link -->
-        </div>
-
-        <!-- Header Section -->
-        <div class="header">
-            <h1>Credits</h1>
-            <p>Thank you to everyone who contributed to Stormy and Hops!</p>
-        </div>
-
-        <!-- Credits List -->
-        <div class="credits-list">
-            <h2>Production Team</h2>
-            <ul>
-                <li>Created by Bunny Toons Studios</li>
-                <li>Artists: (behind Bunny Toons Studios)</li>
-                <li>Animation: (behind Bunny Toons Studios)</li>
-                <li>Music by: (behind Bunny Toons Studios)</li>
-                <li>Voice Actors:
-                    <ul>
-                        <li>Stormy Bunny – caramel</li>
-                        <li>Hops Bunny – we still need a voice actor</li>
-                        <li>Scarlet Bunny – Mary</li>
-                        <li>Crazy Scientist – Rakzo</li>
-                        <li>The Big Dumb Rock – Bunny</li>
-                        <li>Hops Bunny’s Mom – Bria</li>
-                        <li>Mr. Luck – Ernst</li>
-                        <li>Paul the Hyper Cat – Cat Man</li>
-                        <li>Mrs. Diamond – Lucky</li>
-                    </ul>
-                </li>
-                <li>Illustrations and Frames by Bunny Toons Studios</li>
-            </ul>
-        </div>
-
-        <!-- Footer -->
-        <div class="footer">
-            <p>Official Sources:</p>
-            <p>X: <a href="https://x.com/BunnytoonStudio" target="_blank">@BunnytoonStudio</a></p>
-            <p>X: <a href="https://x.com/StormyandHops" target="_blank">@StormyandHops</a></p>
-            <p>YouTube: <a href="https://www.youtube.com/@StormyandHops" target="_blank">@StormyandHops</a></p>
-            <p>Cartoon produced by: Bunny Toons Studio</p>
-        </div>
-    </div>
-
-    <script>
-        // Function to hide the loading screen after a delay
-        function hideLoadingScreen() {
-            setTimeout(() => {
-                document.getElementById('loading-screen').style.display = 'none';
-                document.getElementById('content').style.display = 'block';
-            }, 2000);
-        }
-    </script>
-
+    function initLoading() {
+      setTimeout(showContent, 2000);
+      setTimeout(showContent, 6000);
+    }
+  </script>
 </body>
 </html>
