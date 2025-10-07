@@ -23,8 +23,10 @@
       background: linear-gradient(to bottom right, #fffbe6, #ffd9d9);
       color: #222;
       overflow-x: hidden;
+      transition: opacity 0.5s ease;
     }
 
+    /* Loading Screen */
     #loading-screen {
       position: fixed;
       top: 0;
@@ -276,8 +278,31 @@
     </footer>
   </div>
 
+  <script>
+    function initLoading() {
+      const loader = document.getElementById('loading-screen');
+      const content = document.getElementById('content');
+      setTimeout(() => {
+        loader.style.display = 'none';
+        content.style.display = 'block';
+        spawnSnowflakes();
+      }, 1500);
+    }
 
-
-  
+    function spawnSnowflakes() {
+      const snowflakeCount = 15;
+      for (let i = 0; i < snowflakeCount; i++) {
+        const flake = document.createElement('div');
+        flake.classList.add('snowflake');
+        flake.textContent = '❄';
+        flake.style.left = Math.random() * 100 + 'vw';
+        flake.style.animationDuration = 3 + Math.random() * 5 + 's';
+        flake.style.opacity = Math.random();
+        flake.style.fontSize = 12 + Math.random() * 24 + 'px';
+        document.body.appendChild(flake);
+        flake.style.animationDelay = Math.random() * 5 + 's';
+      }
+    }
+  </script>
 </body>
 </html>
