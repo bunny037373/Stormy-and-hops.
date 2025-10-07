@@ -1,245 +1,340 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QNA - Stormy and Hops</title>
-    <link rel="icon" href="/IMG_1333.jpeg" type="image/jpeg">
-    <style>
-        /* General Page Styling */
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f0f8ff;
-            margin: 0;
-            text-align: center;
-            position: relative;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Q&A - Stormy and Hops</title>
+  <link rel="icon" href="/IMG_1333.jpeg" type="image/jpeg" />
+  <style>
+    :root {
+      --color-red: #ff0000;
+      --color-yellow: #ffd500;
+      --color-blue: #00aaff;
+    }
 
-        /* Snow Effect */
-        .snowflake {
-            position: absolute;
-            top: -10px;
-            z-index: 999;
-            pointer-events: none;
-            font-size: 24px;
-            color: #fff;
-            user-select: none;
-            animation: snow 10s linear infinite;
-        }
+    * {
+      box-sizing: border-box;
+    }
 
-        @keyframes snow {
-            0% {
-                top: -10px;
-                transform: translateX(0) rotate(0);
-            }
-            100% {
-                top: 100vh;
-                transform: translateX(50vw) rotate(360deg);
-            }
-        }
+    body {
+      margin: 0;
+      font-family: 'Comic Sans MS', 'Chalkboard SE', sans-serif;
+      background: linear-gradient(to bottom right, #fffbe6, #ffd9d9);
+      color: #222;
+      overflow-x: hidden;
+    }
 
-        /* Loading Screen */
-        #loading-screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: #f0f8ff;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 9999;
-        }
+    #loading-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: var(--color-yellow);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+    }
 
-        .loader {
-            border: 12px solid #f0f8ff;
-            border-top: 12px solid red;
-            border-right: 12px solid yellow;
-            border-radius: 50%;
-            width: 120px;
-            height: 120px;
-            animation: spin 1s linear infinite;
-        }
+    .loader {
+      border: 10px solid #ffee88;
+      border-top: 10px solid var(--color-red);
+      border-right: 10px solid var(--color-blue);
+      border-radius: 50%;
+      width: 90px;
+      height: 90px;
+      animation: spin 1s linear infinite;
+    }
 
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
 
-        /* Navbar Styling */
-        .navbar {
-            background-color: rgba(0, 0, 0, 0.5);
-            padding: 10px 0;
-        }
+    #content {
+      display: none;
+    }
 
-        .navbar a {
-            color: white;
-            padding: 14px 20px;
-            text-decoration: none;
-            font-weight: bold;
-            display: inline-block;
-        }
+    nav {
+      background-color: var(--color-red);
+      padding: 15px 10px;
+      text-align: center;
+      border-bottom-left-radius: 40px;
+      border-bottom-right-radius: 40px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    }
 
-        .navbar a:nth-child(odd) { color: red; }
-        .navbar a:nth-child(even) { color: yellow; }
+    nav a {
+      margin: 6px 8px;
+      display: inline-block;
+      padding: 10px 18px;
+      color: white;
+      font-weight: bold;
+      text-decoration: none;
+      background-color: #ff6666;
+      border-radius: 20px;
+      transition: transform 0.3s, background-color 0.3s;
+    }
 
-        .navbar a:hover {
-            background-color: #ddd;
-            color: black;
-        }
+    nav a:hover {
+      background-color: var(--color-yellow);
+      color: red;
+      transform: scale(1.1);
+    }
 
-        /* Header Styling */
-        .header {
-            padding: 50px;
-            background-color: #4CAF50;
-            color: white;
-        }
+    header {
+      background: linear-gradient(to right, var(--color-red), var(--color-yellow));
+      color: white;
+      text-align: center;
+      padding: 6vh 5vw;
+      border-radius: 40px;
+      margin: 5vh auto;
+      max-width: 1000px;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.2);
+    }
 
-        .header h1 {
-            font-size: 36px;
-            margin: 0;
-        }
+    header h1 {
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: bold;
+      margin: 0;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    }
 
-        .header p {
-            font-size: 18px;
-            margin-top: 10px;
-            font-weight: bold;
-        }
+    .and span:nth-child(odd) {
+      color: var(--color-red);
+    }
 
-        /* Credits Section */
-        .credits-list h2 {
-            font-size: 28px;
-            margin-top: 20px;
-        }
+    .and span:nth-child(even) {
+      color: var(--color-yellow);
+    }
 
-        .credits-list ul {
-            list-style-type: none;
-            padding: 0;
-        }
+    .subtitle {
+      font-size: clamp(1.2rem, 2.5vw, 1.5rem);
+      font-weight: bold;
+      color: white;
+      margin-top: 12px;
+      text-shadow: 1px 1px 2px black;
+    }
 
-        .credits-list li {
-            font-size: 18px;
-            margin: 10px 0;
-        }
+    .qna-container {
+      max-width: 1000px;
+      margin: 6vh auto;
+      padding: 0 20px;
+    }
 
-        /* Footer Styling */
-        .footer {
-            margin-top: 40px;
-            padding: 20px;
-            background-color: #333;
-            color: white;
-        }
+    .qna-section {
+      background: linear-gradient(to bottom right, #fffbe6, #ffd9d9);
+      border: 3px solid var(--color-yellow);
+      border-radius: 20px;
+      padding: 30px;
+      margin: 20px auto;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+    }
 
-        .footer p {
-            margin: 5px;
-        }
+    .qna-section h2 {
+      font-size: clamp(1.5rem, 4vw, 2rem);
+      color: var(--color-red);
+      margin-bottom: 20px;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+      text-align: center;
+    }
 
-        .footer a {
-            color: #f2f2f2;
-            text-decoration: none;
-        }
+    .question-item {
+      background: rgba(255, 255, 255, 0.7);
+      border-left: 5px solid var(--color-red);
+      border-radius: 10px;
+      padding: 20px;
+      margin: 20px 0;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+    }
 
-        .footer a:hover {
-            color: #ddd;
-        }
-    </style>
+    .question-item strong {
+      color: var(--color-red);
+      font-size: clamp(0.9rem, 2vw, 1.1rem);
+    }
+
+    .question-item p {
+      font-size: clamp(0.8rem, 1.8vw, 1rem);
+      line-height: 1.6;
+      color: #333;
+      margin: 10px 0;
+    }
+
+    .question-item ol {
+      margin: 10px 0;
+      padding-left: 20px;
+    }
+
+    .question-item a {
+      color: var(--color-blue);
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .question-item a:hover {
+      text-decoration: underline;
+    }
+
+    /* Snowflake animation */
+    .snowflake {
+      position: fixed;
+      top: -10px;
+      font-size: 1.5em;
+      pointer-events: none;
+      animation: fall linear infinite;
+      z-index: 1;
+    }
+
+    @keyframes fall {
+      to {
+        transform: translateY(100vh);
+      }
+    }
+
+    footer {
+      background-color: #660000;
+      color: #ffeb99;
+      padding: 30px 10px;
+      text-align: center;
+      border-top-left-radius: 40px;
+      border-top-right-radius: 40px;
+      font-size: clamp(0.9rem, 2vw, 1rem);
+      box-shadow: inset 0 6px 12px rgba(0,0,0,0.2);
+      margin-top: 6vh;
+    }
+
+    footer a {
+      color: white;
+      text-decoration: underline;
+    }
+
+    footer p {
+      margin: 8px 0;
+    }
+  </style>
 </head>
-<body onload="hideLoadingScreen()">
 
-    <!-- Loading Screen -->
-    <div id="loading-screen">
-        <div class="loader"></div>
+<body onload="initLoading()">
+  <!-- Loader -->
+  <div id="loading-screen">
+    <div class="loader"></div>
+  </div>
+
+  <!-- Main Content -->
+  <div id="content">
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="Leaks.html">Leaks</a>
+      <a href="Episode.html">Episodes</a>
+      <a href="Characters.html">Characters</a>
+      <a href="Credits.html">Credits</a>
+      <a href="Live.html">Live</a>
+      <a href="Fanart.html">Fan Art</a>
+      <a href="QNA.html">Q&A</a>
+    </nav>
+
+    <header>
+      <h1>
+        <span style="color:var(--color-red)">Stormy</span>
+        <span class="and"><span>A</span><span>n</span><span>d</span></span>
+        <span style="color:var(--color-yellow)">Hops:</span>
+        <span style="text-decoration: underline;">Q&A</span>
+      </h1>
+      <p class="subtitle">Questions and Answers about our adventures!</p>
+    </header>
+
+    <div class="qna-container">
+      <div class="qna-section">
+        <h2>Frequently Asked Questions</h2>
+        
+        <div class="question-item">
+          <strong>Q: In Stormy and Hops, does Stormy have parents?</strong>
+          <p>A: No answer available</p>
+        </div>
+
+        <div class="question-item">
+          <strong>Q: We know that Hops has a crush on Stormy, does Stormy have a crush on Hops?</strong>
+          <p>A: No answer available</p>
+        </div>
+
+        <div class="question-item">
+          <strong>Q: What language will be used for Stormy and Hops?</strong>
+          <p>A: The primary official language will be English, but other languages may follow, such as Spanish, French, German, Filipino, Latin, and Ukrainian. (Russian will be very limited due to Russia's invasion of Ukraine.)</p>
+        </div>
+
+        <div class="question-item">
+          <strong>Q: Who is considered the most "evil"?</strong>
+          <p>A: The most evil character in Stormy and Hops isn't the big dumb rock (Preston), even though it wants to be evil. The real answer is Scarlet Bunny, who embodies true villainy with her selfish and manipulative nature.</p>
+        </div>
+
+        <div class="question-item">
+          <strong>Q: How many characters are there in Stormy and Hops?</strong>
+          <p>A: In total, there are about 9 confirmed characters in Stormy and Hops, each bringing something unique to the story. However, there are several other characters that haven't been officially revealed or confirmed yet. These unannounced characters could play significant roles in future episodes, adding depth and intrigue to the storyline. In fact, there may be up to 5 more characters that will make an appearance, but for now, their identities remain a mystery. As the series progresses, fans can expect more surprises and possibly new characters that will enrich the adventures of Stormy and Hops.</p>
+        </div>
+
+        <div class="question-item">
+          <strong>Q: What's the dynamic like between Stormy and Hops, and how does it evolve over time?</strong>
+          <p>A: Stormy and Hops first met when Stormy was walking through the forest at the age of 7. He heard a voice and discovered it was Hops, a friendly bunny who would soon become his best friend. It's important to note that Stormy actually met the scientist before meeting Hops, which set the stage for the adventures that followed. Their bond grew stronger as they spent more time together, sharing many exciting experiences. Over time, their friendship deepened, and they became an inseparable team, supporting each other through every challenge and mystery they encounter.</p>
+        </div>
+
+        <div class="question-item">
+          <strong>Q: How can I verify if a website or social media account is real?</strong>
+          <p>A: To verify if a website or social media account is authentic, you can refer to our official channels:</p>
+          <ol>
+            <li><a href="https://stormyandhops.com" target="_blank">stormyandhops.com</a></li>
+            <li><a href="https://youtube.com/@stormyandhops" target="_blank">YouTube: @StormyandHops</a></li>
+            <li><a href="https://x.com/stormyandhops" target="_blank">X: @StormyandHops</a></li>
+            <li><a href="https://x.com/bunnytoonstudio" target="_blank">X: @BunnytoonStudio</a></li>
+            <li><a href="https://stormy-and-hops.fandom.com/wiki/Stormy_and_Hops:_the_adventures_of_a_duel_rabbit_Wiki" target="_blank">Stormy and Hops Wiki</a></li>
+          </ol>
+        </div>
+      </div>
     </div>
 
-    <!-- Main Content -->
-    <div id="content" style="display: none;">
-        <!-- Navigation Bar -->
-        <div class="navbar">
-            <a href="index.html">Home</a>
-            <a href="Leaks.html">Leaks</a>
-            <a href="Episode.html">Episodes</a>
-            <a href="Credits.html">Credits</a>
-            <a href="Live.html">Live</a>
-            <a href="Fanart.html">Fan Art</a> <!-- Added Fanart Link -->
-        </div>
+    <footer>
+      <p><strong>Official Sources:</strong></p>
+      <p>
+        X: <a href="https://x.com/BunnytoonStudio" target="_blank">@BunnytoonStudio</a><br />
+        X: <a href="https://x.com/StormyandHops" target="_blank">@StormyandHops</a><br />
+        YouTube: <a href="https://www.youtube.com/@StormyandHops" target="_blank">@StormyandHops</a>
+      </p>
+      <p>Cartoon produced by: Bunny Toons Studio</p>
+    </footer>
+  </div>
 
-        <!-- Header Section -->
-        <div class="header">
-            <h1>QNA</h1>
-            <p>Stormy and Hops: The Adventure of a Duel Rabbit</p>
-        </div>
+  <script>
+    // Snowfall effect
+    function createSnowflakes() {
+      const snowflakeCount = 50;
+      const snowContainer = document.body;
 
-        <div class="credits-list">
-            <h2>Questions and Answers</h2>
-            <ul>
-                  <li><strong>Q: Why don’t you have any LGBTQ+ representation in your show?</strong>
-                    <br>
-                    A: At Bunny Toons Studios, we find it a red flag to include LGBTQ+ themes in Stormy and Hops: The Adventure of a Duel Rabbit or any of our future projects, as we believe it could have an impact on both adults and children. We may never include such content, as our focus is on fun, friendship, and adventure. As stated on our official Twitter/X page, Stormy and Hops does not include LGBTQ+ themes and never will. Our priority is to create content that remains enjoyable and comfortable for a wide audience.
-                </li>
-                <li><strong>Q: In Stormy and Hops, does Stormy have parents?</strong>
-                    <br>
-                    A: No answer available
-                </li>
-                <li><strong>Q: We know that Hops has a crush on Stormy, does Stormy have a crush on Hops?</strong>
-                    <br>
-                    A: No answer available
-                </li>
-                <li><strong>Q: What language will be used for Stormy and Hops?</strong>
-                    <br>
-                    A: The primary official language will be English, but other languages may follow, such as Spanish, French, German, Filipino, Latin, and Ukrainian. (Russian will be very limited due to Russia’s invasion of Ukraine.)
-                </li>
-                <li><strong>Q: Who is considered the most “evil”?</strong>
-                    <br>
-                    A: The most evil character in Stormy and Hops isn’t the big dumb rock (Preston), even though it wants to be evil. The real answer is Scarlet Bunny, who embodies true villainy with her selfish and manipulative nature.
-                </li>
-                
-                <li><strong>Q: How many characters are there in Stormy and Hops?</strong>
-                    <br>
-                    A: In total, there are about 9 confirmed characters in Stormy and Hops, each bringing something unique to the story. However, there are several other characters that haven’t been officially revealed or confirmed yet. These unannounced characters could play significant roles in future episodes, adding depth and intrigue to the storyline. In fact, there may be up to 5 more characters that will make an appearance, but for now, their identities remain a mystery. As the series progresses, fans can expect more surprises and possibly new characters that will enrich the adventures of Stormy and Hops.
-                </li>
-                <li><strong>Q: What’s the dynamic like between Stormy and Hops, and how does it evolve over time?</strong>
-                    <br>
-                    A: Stormy and Hops first met when Stormy was walking through the forest at the age of 7. He heard a voice and discovered it was Hops, a friendly bunny who would soon become his best friend. It’s important to note that Stormy actually met the scientist before meeting Hops, which set the stage for the adventures that followed. Their bond grew stronger as they spent more time together, sharing many exciting experiences. Over time, their friendship deepened, and they became an inseparable team, supporting each other through every challenge and mystery they encounter.
-                </li>
+      for (let i = 0; i < snowflakeCount; i++) {
+        const snowflake = document.createElement('div');
+        snowflake.classList.add('snowflake');
+        snowflake.textContent = '❄️';
+        snowflake.style.left = `${Math.random() * 100}vw`;
+        snowflake.style.animationDuration = `${Math.random() * 3 + 5}s`;
+        snowflake.style.animationDelay = `${Math.random() * 5}s`;
+        snowContainer.appendChild(snowflake);
+      }
+    }
 
-                <li><strong> Q: How can I verify if a website or social media account is real?</strong>
+    function showContent() {
+      const loader = document.getElementById('loading-screen');
+      const content = document.getElementById('content');
+      if (loader.style.display !== 'none') {
+        loader.style.display = 'none';
+        content.style.display = 'block';
+        createSnowflakes();
+      }
+    }
 
-                    <br>
-                
-                    <br><br>
-                    A: To verify if a website or social media account is authentic, you can refer to our official channels:
-                    <ol>
-                        <li><a href="https://stormyandhops.com" target="_blank">stormyandhops.com</a></li>
-                        <li><a href="https://youtube.com/@stormyandhops" target="_blank">YouTube: @StormyandHops</a></li>
-                        <li><a href="https://x.com/stormyandhops" target="_blank">X: @StormyandHops</a></li>
-                        <li><a href="https://x.com/bunnytoonstudio" target="_blank">X: @BunnytoonStudio</a></li>
-                        <li><a href="https://stormy-and-hops.fandom.com/wiki/Stormy_and_Hops:_the_adventures_of_a_duel_rabbit_Wiki" target="_blank">Stormy and Hops Wiki</a></li>
-                    </ol>
-                </li>
-                    
-            </ul>
-        </div>
-
-        <!-- Footer -->
-        <div class="footer">
-            <p>Official Sources:</p>
-            <p>X: <a href="https://x.com/BunnytoonStudio" target="_blank">@BunnytoonStudio</a></p>
-            <p>X: <a href="https://x.com/StormyandHops" target="_blank">@StormyandHops</a></p>
-            <p>YouTube: <a href="https://www.youtube.com/@StormyandHops" target="_blank">@StormyandHops</a></p>
-            <p>Cartoon produced by: Bunny Toons Studio</p>
-        </div>
-    </div>
-
-    <script>
-        // Function to hide the loading screen after a delay
-        function hideLoadingScreen() {
-            setTimeout(() => {
-                document.getElementById('loading-screen').style.display = 'none';
-                document.getElementById('content').style.display = 'block';
-            }, 2000);
-        }
-    </script>
-
+    function initLoading() {
+      setTimeout(showContent, 2000);
+      setTimeout(showContent, 6000);
+    }
+  </script>
 </body>
 </html>
