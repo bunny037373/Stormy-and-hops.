@@ -276,37 +276,8 @@
     </footer>
   </div>
 
-  <script>
-    // Snowfall effect
-    function createSnowflakes() {
-      const snowflakeCount = 50;
-      const snowContainer = document.body;
 
-      for (let i = 0; i < snowflakeCount; i++) {
-        const snowflake = document.createElement('div');
-        snowflake.classList.add('snowflake');
-        snowflake.textContent = '❄️';
-        snowflake.style.left = `${Math.random() * 100}vw`;
-        snowflake.style.animationDuration = `${Math.random() * 3 + 5}s`;
-        snowflake.style.animationDelay = `${Math.random() * 5}s`;
-        snowContainer.appendChild(snowflake);
-      }
-    }
 
-    function showContent() {
-      const loader = document.getElementById('loading-screen');
-      const content = document.getElementById('content');
-      if (loader.style.display !== 'none') {
-        loader.style.display = 'none';
-        content.style.display = 'block';
-        createSnowflakes();
-      }
-    }
-
-    function initLoading() {
-      setTimeout(showContent, 2000);
-      setTimeout(showContent, 6000);
-    }
-  </script>
+  
 </body>
 </html>
