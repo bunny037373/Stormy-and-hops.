@@ -1,249 +1,257 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Leaks - Stormy and Hops</title>
-    <link rel="icon" href="/IMG_1333.jpeg" type="image/jpeg">
-    <style>
-        /* Loading Screen */
-        #loading-screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: #f0f8ff;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 9999;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Leaks - Stormy and Hops</title>
+  <link rel="icon" href="/IMG_1333.jpeg" type="image/jpeg" />
+  <style>
+    :root {
+      --color-red: #ff0000;
+      --color-yellow: #ffd500;
+      --color-blue: #00aaff;
+    }
 
-        /* Red and yellow rotating circle */
-        .loader {
-            border: 12px solid #f0f8ff;
-            border-top: 12px solid red;
-            border-right: 12px solid yellow;
-            border-radius: 50%;
-            width: 120px; /* Increased width */
-            height: 120px; /* Increased height */
-            animation: spin 1s linear infinite;
-        }
+    * {
+      box-sizing: border-box;
+    }
 
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
+    body {
+      margin: 0;
+      font-family: 'Comic Sans MS', 'Chalkboard SE', sans-serif;
+      background: linear-gradient(to bottom right, #fffbe6, #ffd9d9);
+      color: #222;
+    }
 
-        /* Hide the content initially */
-        #content {
-            display: none;
-        }
+    #loading-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: var(--color-yellow);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+    }
 
-        /* Main Page Styling */
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f0f8ff;
-            margin: 0;
-            text-align: center;
-            position: relative;
-        }
+    .loader {
+      border: 10px solid #ffee88;
+      border-top: 10px solid var(--color-red);
+      border-right: 10px solid var(--color-blue);
+      border-radius: 50%;
+      width: 90px;
+      height: 90px;
+      animation: spin 1s linear infinite;
+    }
 
-        .navbar {
-            background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
-            overflow: hidden;
-            padding: 10px 0;
-        }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
 
-        .navbar a {
-            color: white;
-            padding: 14px 20px;
-            text-decoration: none;
-            display: inline-block;
-            font-weight: bold;
-        }
+    #content {
+      display: none;
+    }
 
-        .navbar a:nth-child(odd) { color: red; }
-        .navbar a:nth-child(even) { color: yellow; }
-        .navbar a:hover {
-            background-color: #ddd;
-            color: black;
-        }
+    nav {
+      background-color: var(--color-red);
+      padding: 15px 10px;
+      text-align: center;
+      border-bottom-left-radius: 40px;
+      border-bottom-right-radius: 40px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    }
 
-        .header {
-            padding: 50px;
-            background-color: #4CAF50;
-            color: white;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
+    nav a {
+      margin: 6px 8px;
+      display: inline-block;
+      padding: 10px 18px;
+      color: white;
+      font-weight: bold;
+      text-decoration: none;
+      background-color: #ff6666;
+      border-radius: 20px;
+      transition: transform 0.3s, background-color 0.3s;
+      font-size: clamp(0.9rem, 2vw, 1rem);
+    }
 
-        .header h1 {
-            font-size: 36px;
-            margin: 0;
-            color: white;
-        }
+    nav a:hover {
+      background-color: var(--color-yellow);
+      color: red;
+      transform: scale(1.1);
+    }
 
-        .header h1 .stormy { color: red; }
-        .header h1 .and {
-            color: red;
-        }
+    .header {
+      background: linear-gradient(to right, var(--color-red), var(--color-yellow));
+      color: white;
+      text-align: center;
+      padding: 6vh 5vw;
+      border-radius: 40px;
+      margin: 5vh auto;
+      max-width: 1000px;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.2);
+    }
 
-        .header h1 .and span {
-            color: red;
-        }
+    .header h1 {
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: bold;
+      margin: 0;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    }
 
-        .header h1 .and span:nth-child(2) {
-            color: yellow;
-        }
+    .and span:nth-child(odd) {
+      color: var(--color-red);
+    }
 
-        .header h1 .hops { color: yellow; }
-        .header h1 .duel-rabbit {
-            color: red;
-            animation: redYellowCycle 2s infinite alternate;
-            text-decoration: underline;
-        }
+    .and span:nth-child(even) {
+      color: var(--color-yellow);
+    }
 
-        @keyframes redYellowCycle {
-            0% { color: red; }
-            50% { color: red; }
-            51% { color: yellow; }
-            100% { color: yellow; }
-        }
+    .duel-rabbit {
+      animation: redYellowCycle 2s infinite alternate;
+      text-decoration: underline;
+    }
 
-        .header p {
-            font-size: 18px;
-            margin-top: 10px;
-            font-weight: bold;
-        }
+    @keyframes redYellowCycle {
+      0%, 50% { color: var(--color-red); }
+      51%, 100% { color: var(--color-yellow); }
+    }
 
-        .header p .official{ color: red; }
-        .header p .website{ color: yellow; }
+    .subtitle {
+      font-size: clamp(1.2rem, 2.5vw, 1.5rem);
+      font-weight: bold;
+      color: white;
+      margin-top: 12px;
+      text-shadow: 1px 1px 2px black;
+    }
 
-        /* Footer */
-        .footer {
-            margin-top: 40px;
-            padding: 20px;
-            background-color: #333;
-            color: white;
-        }
+    .image-container {
+      text-align: center;
+      margin: 6vh auto;
+      max-width: 95%;
+    }
 
-        .footer p {
-            margin: 5px;
-        }
+    .image-container img {
+      width: 45vw;
+      max-width: 320px;
+      height: auto;
+      border: 6px dashed var(--color-yellow);
+      border-radius: 30px;
+      background-color: white;
+      box-shadow: 6px 6px 15px rgba(0,0,0,0.25);
+    }
 
-        .footer a {
-            color: #f2f2f2;
-            text-decoration: none;
-        }
+    footer {
+      background-color: #660000;
+      color: #ffeb99;
+      padding: 30px 10px;
+      text-align: center;
+      border-top-left-radius: 40px;
+      border-top-right-radius: 40px;
+      font-size: clamp(0.9rem, 2vw, 1rem);
+      box-shadow: inset 0 6px 12px rgba(0,0,0,0.2);
+    }
 
-        .footer a:hover {
-            color: #ddd;
-        }
+    footer a {
+      color: white;
+      text-decoration: underline;
+    }
 
-        /* Snowfall effect */
-        .snowflake {
-            position: absolute;
-            top: -10px;
-            pointer-events: none;
-            z-index: 9999;
-            font-size: 24px;
-            color: #ffffff;
-            user-select: none;
-            animation: fall 5s linear infinite;
-        }
+    footer p {
+      margin: 8px 0;
+    }
 
-        @keyframes fall {
-            to {
-                transform: translateY(100vh);
-            }
-        }
+    .snowflake {
+      position: absolute;
+      top: -10px;
+      pointer-events: none;
+      z-index: 9999;
+      font-size: 24px;
+      color: #ffffff;
+      user-select: none;
+      animation: fall 5s linear infinite;
+    }
 
-        @keyframes alternateRedYellow {
-            0% { color: red; }
-            100% { color: yellow; }
-        }
-    </style>
+    @keyframes fall {
+      to {
+        transform: translateY(100vh);
+      }
+    }
+  </style>
 </head>
-<body onload="hideLoadingScreen()">
+<body onload="initLoading()">
 
-<!-- Loading Screen -->
+<!-- Loader -->
 <div id="loading-screen">
-    <div class="loader"></div>
+  <div class="loader"></div>
 </div>
 
 <!-- Main Content -->
 <div id="content">
-    <div class="navbar">
-        <a href="index.html">Home</a>
-        <a href="Leaks.html">Leaks</a>
-        <a href="Episode.html">Episodes</a>
-        <a href="Credits.html">Credits</a>
-        <a href="Live.html">Live</a>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="Leaks.html">Leaks</a>
+    <a href="Episode.html">Episodes</a>
+    <a href="Credits.html">Credits</a>
+    <a href="Live.html">Live</a>
+    <a href="Fanart.html">Fan Art</a>
+  </nav>
 
-        <a href="Fanart.html">Fan Art</a> <!-- Added Fanart Link -->
-    </div>
+  <div class="header">
+    <h1>
+      <span style="color:var(--color-red)">Stormy</span>
+      <span class="and"><span>A</span><span>n</span><span>d</span></span>
+      <span style="color:var(--color-yellow)">Hops:</span>
+      <span class="duel-rabbit">Leaks</span>
+    </h1>
+    <p class="subtitle">Official Website</p>
+  </div>
 
-    <div class="header" id="leaks">
-        <h1>
-            <span class="stormy">Stormy</span> 
-            <span class="and"><span>A</span><span>n</span><span>d</span></span> 
-            <span class="hops">Hops:</span> 
-            <span class="duel-rabbit">Leaks</span>
-        </h1>
-        <p>
-            <span class="official">Official</span>
-            <span class="website">Website</span>
-        </p>
-    </div>
+  <div class="image-container">
+    <img src="leaks.png.jpg" alt="Leaks Image" />
+  </div>
 
-    <div style="height: 500px; display: flex; align-items: center; justify-content: center; color: black;">
-        <!-- Adjusted image size to be small but not too small -->
-        <img src="IMG_6315.jpeg" alt="Leaks Image" style="width: 220px; height: 220px;">
-    </div>
-
-    <div class="footer">
-        <p>Official Sources:</p>
-        <p>X: <a href="https://x.com/BunnytoonStudio" target="_blank">@BunnytoonStudio</a></p>
-        <p>X: <a href="https://x.com/StormyandHops" target="_blank">@StormyandHops</a></p>
-        <p>YouTube: <a href="https://www.youtube.com/@StormyandHops" target="_blank">@StormyandHops</a></p>
-        <p>Cartoon produced by: Bunny Toons Studio</p>
-    </div>
+  <footer>
+    <p><strong>Official Sources:</strong></p>
+    <p>X: <a href="https://x.com/BunnytoonStudio" target="_blank">@BunnytoonStudio</a></p>
+    <p>X: <a href="https://x.com/StormyandHops" target="_blank">@StormyandHops</a></p>
+    <p>YouTube: <a href="https://www.youtube.com/@StormyandHops" target="_blank">@StormyandHops</a></p>
+    <p>Cartoon produced by: Bunny Toons Studio</p>
+  </footer>
 </div>
 
 <script>
-    // Function to hide the loading screen after a delay
-    function hideLoadingScreen() {
-        setTimeout(() => {
-            document.getElementById('loading-screen').style.display = 'none';
-            document.getElementById('content').style.display = 'block';
-
-            setInterval(createSnowflakes, 100);
-        }, 2000); // Delay of 2 seconds before showing content
+  function showContent() {
+    const loader = document.getElementById('loading-screen');
+    const content = document.getElementById('content');
+    if (loader.style.display !== 'none') {
+      loader.style.display = 'none';
+      content.style.display = 'block';
     }
+  }
 
-    // Snowfall effect function
-    function createSnowflakes() {
-        const snowflake = document.createElement('div');
-        
-        document.body.appendChild(snowflake);
+  function initLoading() {
+    setTimeout(showContent, 2000); // Normal
+    setTimeout(showContent, 6000); // Fallback
 
-        const startPosX = Math.random() * window.innerWidth;
-        const snowflakeSize = Math.random() * 10 + 10;
+    // Start snowfall
+    setInterval(createSnowflakes, 100);
+  }
 
-        snowflake.style.left = `${startPosX}px`;
-        snowflake.style.fontSize = `${snowflakeSize}px`;
-
-        snowflake.style.animationName = 'fall';
-        snowflake.style.animationDuration = `${Math.random() * 3 + 2}s`;
-        snowflake.style.animationTimingFunction = 'linear';
-
-        snowflake.addEventListener('animationend', () => {
-            snowflake.remove();
-        });
-    }
+  function createSnowflakes() {
+    const snowflake = document.createElement('div');
+    snowflake.className = 'snowflake';
+    snowflake.textContent = '❄';
+    snowflake.style.left = `${Math.random() * window.innerWidth}px`;
+    snowflake.style.fontSize = `${Math.random() * 10 + 10}px`;
+    snowflake.style.animationDuration = `${Math.random() * 3 + 2}s`;
+    document.body.appendChild(snowflake);
+    snowflake.addEventListener('animationend', () => {
+      snowflake.remove();
+    });
+  }
 </script>
 
 </body>
