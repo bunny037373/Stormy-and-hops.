@@ -1,1 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Application Form - Bunny Toons Studios</title>
+  <style>
+    body {
+      font-family: 'Comic Sans MS', sans-serif;
+      background: linear-gradient(to bottom right, #fffbe6, #ffd9d9);
+      color: #333;
+      text-align: center;
+      margin: 0;
+      padding: 30px;
+    }
 
+    h1 {
+      color: #ff0000;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+    }
+
+    .intro {
+      max-width: 600px;
+      margin: 20px auto;
+      background: white;
+      border: 3px solid #ffd500;
+      border-radius: 20px;
+      padding: 20px;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+    }
+
+    .options {
+      margin-top: 20px;
+    }
+
+    button {
+      background-color: #ff6666;
+      color: white;
+      font-weight: bold;
+      border: none;
+      border-radius: 20px;
+      padding: 10px 20px;
+      margin: 10px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background-color: #ffd500;
+      color: #ff0000;
+      transform: scale(1.1);
+    }
+
+    form {
+      display: none;
+      background: white;
+      border: 3px solid #ffd500;
+      border-radius: 20px;
+      padding: 20px;
+      max-width: 600px;
+      margin: 30px auto;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+      text-align: left;
+    }
+
+    label {
+      font-weight: bold;
+      display: block;
+      margin-top: 10px;
+      color: #ff0000;
+    }
+
+    input, textarea, select {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border-radius: 10px;
+      border: 2px solid #ffd500;
+      font-family: inherit;
+    }
+
+    textarea {
+      resize: none;
+      height: 80px;
+    }
+
+    .submit-btn {
+      margin-top: 20px;
+      display: block;
+      width: 100%;
+      background: linear-gradient(to right, #ff0000, #ffd500);
+      color: white;
+      border: none;
+      border-radius: 20px;
+      padding: 10px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .submit-btn:hover {
+      background: #ff6666;
+      transform: scale(1.05);
+    }
+
+    .back-btn {
+      display: block;
+      margin-top: 10px;
+      background: #ccc;
+      color: black;
+      border: none;
+      border-radius: 20px;
+      padding: 8px 15px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h1>🎬 Bunny Toons Studios Applications</h1>
+
+  <div class="intro">
+    <p>Hello there toons! You’re about to enter a place where you can submit your application to either become a <strong>Discord Moderator</strong> or a <strong>Voice Actor</strong> for our cartoon.</p>
+    <p>Please select one of the following options:</p>
+    <div class="options">
+      <button onclick="showForm('mod')">Moderator 🛡️</button>
+      <button onclick="showForm('va')">Voice Actor 🎙️</button>
+    </div>
+  </div>
+
+  <!-- Moderator Form -->
+  <form id="modForm">
+    <h2>🛡️ Moderator Application</h2>
+
+    <label>Discord Username:</label>
+    <input type="text" placeholder="Example: ToonMaster#1234" required>
+
+    <label>Do you have experience with moderation?</label>
+    <textarea placeholder="Explain your experience..."></textarea>
+
+    <label>How active are you on Discord?</label>
+    <select>
+      <option>Very active (daily)</option>
+      <option>Active a few times a week</option>
+      <option>Occasionally active</option>
+    </select>
+
+    <label>Why do you want to be a moderator?</label>
+    <textarea placeholder="Tell us why you'd be a great fit!"></textarea>
+
+    <button type="submit" class="submit-btn">Submit Moderator Application</button>
+    <button type="button" class="back-btn" onclick="goBack()">← Back</button>
+  </form>
+
+  <!-- Voice Actor Form -->
+  <form id="vaForm">
+    <h2>🎙️ Voice Actor Application</h2>
+
+    <label>Your Name or Nickname:</label>
+    <input type="text" placeholder="Example: Bunny" required>
+
+    <label>Discord Username:</label>
+    <input type="text" placeholder="Example: BunnyVA#2025" required>
+
+    <label>Have you done voice acting before?</label>
+    <textarea placeholder="Tell us about any experience (if any)..."></textarea>
+
+    <label>What type of voices can you do?</label>
+    <textarea placeholder="Describe your voice range or any characters you can perform!"></textarea>
+
+    <label>Upload a demo or sample (optional):</label>
+    <input type="file" accept="audio/*">
+
+    <label>Why do you want to be a voice actor for Stormy and Hops?</label>
+    <textarea placeholder="We’d love to know your reason!"></textarea>
+
+    <button type="submit" class="submit-btn">Submit Voice Actor Application</button>
+    <button type="button" class="back-btn" onclick="goBack()">← Back</button>
+  </form>
+
+  <script>
+    function showForm(type) {
+      document.querySelector('.intro').style.display = 'none';
+      document.getElementById('modForm').style.display = type === 'mod' ? 'block' : 'none';
+      document.getElementById('vaForm').style.display = type === 'va' ? 'block' : 'none';
+    }
+
+    function goBack() {
+      document.querySelector('.intro').style.display = 'block';
+      document.getElementById('modForm').style.display = 'none';
+      document.getElementById('vaForm').style.display = 'none';
+    }
+  </script>
+</body>
+</html>
