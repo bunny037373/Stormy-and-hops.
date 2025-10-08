@@ -319,15 +319,106 @@
 </head>
 
 <body onload="initLoading()">
+  <!-- Loader -->
   <div id="loading-screen">
     <div class="loader"></div>
   </div>
 
+  <!-- Main Content -->
   <div id="content">
-    <!-- same content as before -->
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="Leaks.html">Leaks</a>
+      <a href="Episode.html">Episodes</a>
+      <a href="Characters.html">Characters</a>
+      <a href="Credits.html">Credits</a>
+      <a href="Live.html">Live</a>
+      <a href="Fanart.html">Fan Art</a>
+      <a href="QNA.html">Q&A</a>
+    </nav>
+
+    <header>
+      <h1>
+        <span style="color:var(--color-red)">Stormy</span>
+        <span class="and"><span>A</span><span>n</span><span>d</span></span>
+        <span style="color:var(--color-yellow)">Hops:</span>
+        <span style="text-decoration: underline;">Live</span>
+      </h1>
+      <p class="subtitle">Join us for live adventures!</p>
+    </header>
+
+    <div class="live-container">
+      <div class="live-section">
+        <h2>Live Stream</h2>
+        <div class="status-indicator status-live">🔴 LIVE NOW</div>
+        
+        <div class="live-feed">
+          <div class="live-feed-overlay">● LIVE</div>
+          <div class="live-feed-content">
+            <div>🎬 Live Stream in Progress</div>
+            <div style="font-size: 16px; margin-top: 10px;">
+              Episode 1: The Great Adventure Begins
+            </div>
+          </div>
+        </div>
+        
+        <p>Welcome to our live stream! We're currently broadcasting Episode 1 of Stormy and Hops. Join the adventure as our heroes discover a mysterious map!</p>
+      </div>
+
+      <div class="schedule-container">
+        <div class="schedule-header">
+          <h2 style="color: var(--color-red); margin-bottom: 10px;">📺 Live Schedule</h2>
+          <div class="current-time" id="currentTime">Loading time...</div>
+          <p style="margin: 0; color: #666;">Each episode is 15 minutes</p>
+        </div>
+
+        <div class="schedule-scroll" id="scheduleContainer">
+          <!-- Schedule items will be populated by JavaScript -->
+        </div>
+      </div>
+
+      <div class="live-section">
+        <h2>Christmas Music Player</h2>
+        <div class="music-controls">
+          <p><strong>🎄 Enjoy some festive music while you watch! 🎄</strong></p>
+          <audio controls loop>
+            <source src="christmas-music.mp3" type="audio/mpeg">
+            Your browser does not support the audio element.
+          </audio>
+          <p><em>Perfect background music for the holiday season!</em></p>
+        </div>
+      </div>
+
+      <div class="live-section">
+        <h2>Upcoming Events</h2>
+        <p><strong>Episode Premieres:</strong> Watch for announcements on our YouTube channel!</p>
+        <p><strong>Character Meet & Greets:</strong> Special live sessions with Stormy, Hops, and friends!</p>
+        <p><strong>Behind the Scenes:</strong> Get exclusive looks at how our adventures are made!</p>
+        <p><strong>Q&A Sessions:</strong> Ask questions directly to the creators!</p>
+      </div>
+
+      <div class="live-section">
+        <h2>How to Stay Updated</h2>
+        <p><strong>Follow our X accounts:</strong> @StormyandHops and @BunnytoonStudio</p>
+        <p><strong>Subscribe to YouTube:</strong> @StormyandHops for premiere notifications</p>
+        <p><strong>Check this page regularly:</strong> We'll update live stream schedules here</p>
+        <p><strong>Enable notifications:</strong> Turn on alerts for all our social media channels</p>
+      </div>
+    </div>
+
+    <footer>
+      <p><strong>Official Sources:</strong></p>
+      <p>
+        X: <a href="https://x.com/BunnytoonStudio" target="_blank">@BunnytoonStudio</a><br />
+        X: <a href="https://x.com/StormyandHops" target="_blank">@StormyandHops</a><br />
+        YouTube: <a href="https://www.youtube.com/@StormyandHops" target="_blank">@StormyandHops</a>
+      </p>
+      <p>Cartoon produced by: Bunny Toons Studio</p>
+    </footer>
   </div>
 
   <script>
+    // Episode schedule data
     const episodes = [
       "Episode 1: The Great Adventure Begins",
       "Episode 2: The Magical Forest",
@@ -353,17 +444,18 @@
       const container = document.getElementById('scheduleContainer');
       const now = new Date();
       let currentTime = new Date(now);
-      currentTime.setHours(9, 0, 0, 0);
+      currentTime.setHours(9, 0, 0, 0); // Start at 9:00 AM
 
       container.innerHTML = '';
 
       for (let i = 0; i < episodes.length; i++) {
         const startTime = new Date(currentTime);
-        const endTime = new Date(currentTime.getTime() + 15 * 60000);
+        const endTime = new Date(currentTime.getTime() + 15 * 60000); // Add 15 minutes
 
         const scheduleItem = document.createElement('div');
         scheduleItem.className = 'schedule-item';
 
+        // Determine if this is current or next episode
         if (now >= startTime && now < endTime) {
           scheduleItem.classList.add('current');
         } else if (startTime > now && i === getCurrentEpisodeIndex() + 1) {
@@ -380,6 +472,8 @@
         `;
 
         container.appendChild(scheduleItem);
+
+        // Move to next episode time (15 minutes later)
         currentTime.setMinutes(currentTime.getMinutes() + 15);
       }
     }
@@ -388,6 +482,7 @@
       const now = new Date();
       const startTime = new Date(now);
       startTime.setHours(9, 0, 0, 0);
+
       const minutesSinceStart = (now - startTime) / 60000;
       return Math.floor(minutesSinceStart / 15) % episodes.length;
     }
@@ -395,6 +490,7 @@
     function updateLiveFeed() {
       const currentEpisodeIndex = getCurrentEpisodeIndex();
       const liveFeedContent = document.querySelector('.live-feed-content');
+      
       if (currentEpisodeIndex >= 0 && currentEpisodeIndex < episodes.length) {
         liveFeedContent.innerHTML = `
           <div>🎬 Live Stream in Progress</div>
@@ -411,13 +507,20 @@
       if (loader.style.display !== 'none') {
         loader.style.display = 'none';
         content.style.display = 'block';
+        // snow removed — do not call createSnowflakes()
+        
+        // Initialize schedule and time updates
         updateCurrentTime();
         generateSchedule();
         updateLiveFeed();
+        
+        // Update every second
         setInterval(() => {
           updateCurrentTime();
           updateLiveFeed();
         }, 1000);
+        
+        // Regenerate schedule every minute
         setInterval(generateSchedule, 60000);
       }
     }
