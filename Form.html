@@ -13,12 +13,10 @@
       margin: 0;
       padding: 30px;
     }
-
     h1 {
       color: #ff0000;
       text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
     }
-
     .intro {
       max-width: 600px;
       margin: 20px auto;
@@ -28,11 +26,7 @@
       padding: 20px;
       box-shadow: 0 6px 15px rgba(0,0,0,0.1);
     }
-
-    .options {
-      margin-top: 20px;
-    }
-
+    .options { margin-top: 20px; }
     button {
       background-color: #ff6666;
       color: white;
@@ -45,13 +39,11 @@
       cursor: pointer;
       transition: 0.3s;
     }
-
     button:hover {
       background-color: #ffd500;
       color: #ff0000;
       transform: scale(1.1);
     }
-
     form {
       display: none;
       background: white;
@@ -63,14 +55,12 @@
       box-shadow: 0 6px 15px rgba(0,0,0,0.1);
       text-align: left;
     }
-
     label {
       font-weight: bold;
       display: block;
       margin-top: 10px;
       color: #ff0000;
     }
-
     input, textarea, select {
       width: 100%;
       padding: 10px;
@@ -79,12 +69,7 @@
       border: 2px solid #ffd500;
       font-family: inherit;
     }
-
-    textarea {
-      resize: none;
-      height: 80px;
-    }
-
+    textarea { resize: none; height: 80px; }
     .submit-btn {
       margin-top: 20px;
       display: block;
@@ -98,12 +83,7 @@
       cursor: pointer;
       transition: 0.3s;
     }
-
-    .submit-btn:hover {
-      background: #ff6666;
-      transform: scale(1.05);
-    }
-
+    .submit-btn:hover { background: #ff6666; transform: scale(1.05); }
     .back-btn {
       display: block;
       margin-top: 10px;
@@ -119,7 +99,6 @@
 </head>
 <body>
   <h1>🎬 Bunny Toons Studios Applications</h1>
-
   <div class="intro">
     <p>Hello there toons! You’re about to enter a place where you can submit your application to either become a <strong>Discord Moderator</strong> or a <strong>Voice Actor</strong> for our cartoon.</p>
     <p>Please select one of the following options:</p>
@@ -130,50 +109,45 @@
   </div>
 
   <!-- Moderator Form -->
-  <form id="modForm">
+  <form id="modForm" onsubmit="submitForm(event, 'mod')">
     <h2>🛡️ Moderator Application</h2>
-
     <label>Discord Username:</label>
-    <input type="text" placeholder="Example: ToonMaster#1234" required>
+    <input id="modUsername" type="text" placeholder="Example: ToonMaster#1234" required>
 
     <label>Do you have experience with moderation?</label>
-    <textarea placeholder="Explain your experience..."></textarea>
+    <textarea id="modExperience" placeholder="Explain your experience..."></textarea>
 
     <label>How active are you on Discord?</label>
-    <select>
+    <select id="modActivity">
       <option>Very active (daily)</option>
       <option>Active a few times a week</option>
       <option>Occasionally active</option>
     </select>
 
     <label>Why do you want to be a moderator?</label>
-    <textarea placeholder="Tell us why you'd be a great fit!"></textarea>
+    <textarea id="modReason" placeholder="Tell us why you'd be a great fit!"></textarea>
 
     <button type="submit" class="submit-btn">Submit Moderator Application</button>
     <button type="button" class="back-btn" onclick="goBack()">← Back</button>
   </form>
 
   <!-- Voice Actor Form -->
-  <form id="vaForm">
+  <form id="vaForm" onsubmit="submitForm(event, 'va')">
     <h2>🎙️ Voice Actor Application</h2>
-
     <label>Your Name or Nickname:</label>
-    <input type="text" placeholder="Example: Bunny" required>
+    <input id="vaName" type="text" placeholder="Example: Bunny" required>
 
     <label>Discord Username:</label>
-    <input type="text" placeholder="Example: BunnyVA#2025" required>
+    <input id="vaUsername" type="text" placeholder="Example: BunnyVA#2025" required>
 
     <label>Have you done voice acting before?</label>
-    <textarea placeholder="Tell us about any experience (if any)..."></textarea>
+    <textarea id="vaExperience" placeholder="Tell us about any experience (if any)..."></textarea>
 
     <label>What type of voices can you do?</label>
-    <textarea placeholder="Describe your voice range or any characters you can perform!"></textarea>
-
-    <label>Upload a demo or sample (optional):</label>
-    <input type="file" accept="audio/*">
+    <textarea id="vaVoices" placeholder="Describe your voice range or any characters you can perform!"></textarea>
 
     <label>Why do you want to be a voice actor for Stormy and Hops?</label>
-    <textarea placeholder="We’d love to know your reason!"></textarea>
+    <textarea id="vaReason" placeholder="We’d love to know your reason!"></textarea>
 
     <button type="submit" class="submit-btn">Submit Voice Actor Application</button>
     <button type="button" class="back-btn" onclick="goBack()">← Back</button>
@@ -190,6 +164,32 @@
       document.querySelector('.intro').style.display = 'block';
       document.getElementById('modForm').style.display = 'none';
       document.getElementById('vaForm').style.display = 'none';
+    }
+
+    function submitForm(e, type) {
+      e.preventDefault();
+      let data = {};
+      if (type === 'mod') {
+        data = {
+          type: 'Moderator Application',
+          username: document.getElementById('modUsername').value,
+          experience: document.getElementById('modExperience').value,
+          activity: document.getElementById('modActivity').value,
+          reason: document.getElementById('modReason').value
+        };
+      } else {
+        data = {
+          type: 'Voice Actor Application',
+          name: document.getElementById('vaName').value,
+          username: document.getElementById('vaUsername').value,
+          experience: document.getElementById('vaExperience').value,
+          voices: document.getElementById('vaVoices').value,
+          reason: document.getElementById('vaReason').value
+        };
+      }
+      localStorage.setItem('bunnyApplication', JSON.stringify(data));
+      alert('Your form has been submitted and reviewed. Please wait 🐰');
+      window.location.href = 'review.html';
     }
   </script>
 </body>
