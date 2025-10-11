@@ -1,1 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Application Review - Bunny Toons Studios</title>
+  <style>
+    body {
+      font-family: 'Comic Sans MS', sans-serif;
+      background: linear-gradient(to bottom right, #fffbe6, #ffd9d9);
+      color: #333;
+      text-align: center;
+      margin: 0;
+      padding: 30px;
+    }
+    h1 {
+      color: #ff0000;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+    }
+    .review-box {
+      display: none;
+      background: white;
+      border: 3px solid #ffd500;
+      border-radius: 20px;
+      max-width: 700px;
+      margin: 0 auto;
+      padding: 20px;
+      text-align: left;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+    }
+    .status {
+      text-align: center;
+      margin-top: 20px;
+    }
+    button {
+      background-color: #ff6666;
+      color: white;
+      font-weight: bold;
+      border: none;
+      border-radius: 20px;
+      padding: 10px 20px;
+      margin: 10px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    button:hover {
+      background-color: #ffd500;
+      color: #ff0000;
+      transform: scale(1.1);
+    }
+  </style>
+</head>
+<body>
+  <h1>📝 Bunny Toons Studios - Application Review</h1>
+  <div id="loginBox">
+    <p>Admin Access Required 🐰</p>
+    <input type="password" id="adminPass" placeholder="Enter Admin Password">
+    <button onclick="checkPassword()">Login</button>
+  </div>
 
+  <div id="reviewBox" class="review-box">
+    <h2 id="appType"></h2>
+    <div id="appData"></div>
+    <div class="status">
+      <button onclick="setStatus('Approved ✅')">Approve</button>
+      <button onclick="setStatus('Denied ❌')">Deny</button>
+      <button onclick="setStatus('Unsure ❓')">Unsure</button>
+    </div>
+    <h3 id="finalStatus"></h3>
+  </div>
+
+  <script>
+    const encodedPass = btoa('bunnyadmin2025'); // simple hidden password
+
+    function checkPassword() {
+      const input = document.getElementById('adminPass').value;
+      if (btoa(input) === encodedPass) {
+        document.getElementById('loginBox').style.display = 'none';
+        showApplication();
+      } else {
+        alert('Wrong password!');
+      }
+    }
+
+    function showApplication() {
+      const data = JSON.parse(localStorage.getItem('bunnyApplication'));
+      if (!data) {
+        alert('No application found.');
+        return;
+      }
+      document.getElementById('reviewBox').style.display = 'block';
+      document.getElementById('appType').innerText = data.type;
+      let html = '';
+      for (let key in data) {
+        if (key !== 'type') {
+          html += `<p><strong>${key}:</strong> ${data[key]}</p>`;
+        }
+      }
+      document.getElementById('appData').innerHTML = html;
+    }
+
+    function setStatus(status) {
+      document.getElementById('finalStatus').innerText = 'Status: ' + status;
+    }
+  </script>
+</body>
+</html>
