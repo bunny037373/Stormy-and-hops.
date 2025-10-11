@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fan Art Submit - Bunny Toons Studios</title>
+  <style>
+    body {
+      font-family: 'Comic Sans MS', sans-serif;
+      background: linear-gradient(to bottom right, #fffbe6, #ffd9d9);
+      color: #333;
+      text-align: center;
+      margin: 0;
+      padding: 30px;
+    }
+
+    h1 {
+      color: #ff0000;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+    }
+
+    .rules {
+      max-width: 700px;
+      margin: 20px auto;
+      background: white;
+      border: 3px solid #ffd500;
+      border-radius: 20px;
+      padding: 25px;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+      text-align: left;
+    }
+
+    .rules h2 {
+      text-align: center;
+      color: #ff0000;
+    }
+
+    .rules ol {
+      margin-left: 25px;
+      color: #333;
+    }
+
+    .rules li {
+      margin-bottom: 10px;
+      line-height: 1.6;
+    }
+
+    form {
+      background: white;
+      border: 3px solid #ffd500;
+      border-radius: 20px;
+      padding: 25px;
+      max-width: 600px;
+      margin: 30px auto;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+      text-align: left;
+    }
+
+    label {
+      font-weight: bold;
+      display: block;
+      margin-top: 10px;
+      color: #ff0000;
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border-radius: 10px;
+      border: 2px solid #ffd500;
+      font-family: inherit;
+    }
+
+    textarea {
+      resize: none;
+      height: 80px;
+    }
+
+    .submit-btn {
+      margin-top: 20px;
+      display: block;
+      width: 100%;
+      background: linear-gradient(to right, #ff0000, #ffd500);
+      color: white;
+      border: none;
+      border-radius: 20px;
+      padding: 10px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .submit-btn:hover {
+      background: #ff6666;
+      transform: scale(1.05);
+    }
+
+    .message {
+      display: none;
+      margin-top: 20px;
+      background: #fff3cd;
+      border: 2px solid #ffeeba;
+      border-radius: 15px;
+      padding: 15px;
+      font-weight: bold;
+      color: #856404;
+      max-width: 500px;
+      margin-left: auto;
+      margin-right: auto;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <h1>🎨 Fan Art Submit - Bunny Toons Studios</h1>
+
+  <div class="rules">
+    <h2>RULES Before Submitting</h2>
+    <ol>
+      <li><strong>No NSFW or Gore:</strong> Do not send any NSFW or gore of Stormy and Hops characters. Submissions violating this rule will be rejected immediately.</li>
+      <li><strong>Minimal Style Copying:</strong> Keep style copying at a minimum. Make sure your art includes your own creative twist.</li>
+      <li><strong>Avoid Spamming:</strong> Submit your fan art only once to keep things fair and organized.</li>
+      <li><strong>Respect Originality:</strong> Avoid using copyrighted assets or replicating other works too closely.</li>
+      <li><strong>Fake Accounts:</strong> If we find fake “official” accounts, submissions will be denied automatically.</li>
+    </ol>
+    <p><em>(Failure to follow these rules may result in denial of your future submissions.)</em></p>
+  </div>
+
+  <form id="fanArtForm">
+    <h2>🖼️ Submit Your Fan Art</h2>
+
+    <label>Your Name or Nickname:</label>
+    <input type="text" id="name" placeholder="Example: Bunny" required>
+
+    <label>Discord Username:</label>
+    <input type="text" id="discord" placeholder="Example: BunnyArt#2025" required>
+
+    <label>Title of Your Artwork:</label>
+    <input type="text" id="title" placeholder="Example: Stormy in Toon Springs" required>
+
+    <label>Description (optional):</label>
+    <textarea id="desc" placeholder="Describe your art or what inspired it..."></textarea>
+
+    <label>Upload Your Fan Art (required):</label>
+    <input type="file" id="artFile" accept="image/*" required>
+
+    <button type="submit" class="submit-btn">Submit Fan Art</button>
+  </form>
+
+  <div class="message" id="messageBox">
+    ✅ Your fan art has been submitted! Please wait for review.  
+    <br>Thank you for sharing your creativity with Bunny Toons Studios! 🐰
+  </div>
+
+  <script>
+    document.getElementById('fanArtForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      // Get form data
+      const name = document.getElementById('name').value.trim();
+      const discord = document.getElementById('discord').value.trim();
+      const title = document.getElementById('title').value.trim();
+      const file = document.getElementById('artFile').files[0];
+
+      if (!name || !discord || !title || !file) {
+        alert("Please fill out all required fields and attach your fan art file!");
+        return;
+      }
+
+      // Show success message
+      document.getElementById('fanArtForm').style.display = 'none';
+      document.getElementById('messageBox').style.display = 'block';
+
+      // Store submission locally (for simulation)
+      const submission = {
+        name,
+        discord,
+        title,
+        desc: document.getElementById('desc').value.trim(),
+        fileName: file.name,
+        status: "Pending Review"
+      };
+
+      // Save submission in browser storage (simulated)
+      let artSubmissions = JSON.parse(localStorage.getItem('fanArtSubmissions') || "[]");
+      artSubmissions.push(submission);
+      localStorage.setItem('fanArtSubmissions', JSON.stringify(artSubmissions));
+    });
+  </script>
+</body>
+</html>
