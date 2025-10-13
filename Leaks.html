@@ -162,14 +162,6 @@
     footer p {
       margin: 8px 0;
     }
-
-
-
-    @keyframes fall {
-      to {
-        transform: translateY(100vh);
-      }
-    }
   </style>
 </head>
 <body onload="initLoading()">
@@ -180,17 +172,17 @@
 </div>
 
 <!-- Main Content -->
- <div id="content">
-    <nav>
-      <a href="index.html">Home</a>
-      <a href="Leaks.html">Leaks</a>
-      <a href="Episode.html">Episodes</a>
-      <a href="Credits.html">Credits</a>
-      <a href="Live.html">Live</a>
-      <a href="Fanart.html">Fan Art</a>
-      <a href="QNA.html">Q&A</a>
-      <a href="Characters.html">Characters</a>
-    </nav>
+<div id="content">
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="Leaks.html">Leaks</a>
+    <a href="Episode.html">Episodes</a>
+    <a href="Credits.html">Credits</a>
+    <a href="Live.html">Live</a>
+    <a href="Fanart.html">Fan Art</a>
+    <a href="QNA.html">Q&A</a>
+    <a href="Characters.html">Characters</a>
+  </nav>
 
   <div class="header">
     <h1>
@@ -217,18 +209,16 @@
 
 <script>
   function showContent() {
-    const loader = document.getElementById('loading-screen');
-    const content = document.getElementById('content');
-    if (loader.style.display !== 'none') {
-      loader.style.display = 'none';
-      content.style.display = 'block';
-    }
+    document.getElementById('loading-screen').style.display = 'none';
+    document.getElementById('content').style.display = 'block';
   }
 
   function initLoading() {
-    setTimeout(showContent, 2000); // Normal
-    setTimeout(showContent, 6000); // Fallback
-
+    // Show content after 2 seconds, fallback at 6 seconds
+    setTimeout(showContent, 2000);
+    setTimeout(showContent, 6000);
+  }
+</script>
 
 </body>
 </html>
