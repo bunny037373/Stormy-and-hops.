@@ -108,47 +108,47 @@
 </div>
 
 <script>
-  // URL of your bot's Express API
-  const API_URL = "http://localhost:3000/appeal"; 
-  const API_KEY = "10B8hUj93hsoejdhdhw830rf"; // Must match your bot's API_SECRET
+const API_URL = "http://localhost:3000/appeal"; // must match bot server
+const API_KEY = "10B8hUj93hsoejdhdhw830rf";
 
-  document.getElementById('appealForm').addEventListener('submit', async function(e) {
-    e.preventDefault();
+document.getElementById('appealForm').addEventListener('submit', async function(e) {
+  e.preventDefault();
 
-    const userId = document.getElementById('userId').value.trim();
-    const username = document.getElementById('username').value.trim();
-    const moderatorNote = document.getElementById('moderatorNote').value.trim();
-    const reason = document.getElementById('reason').value.trim();
+  const userId = document.getElementById('userId').value.trim();
+  const username = document.getElementById('username').value.trim();
+  const moderatorNote = document.getElementById('moderatorNote').value.trim();
+  const reason = document.getElementById('reason').value.trim();
 
-    if (!userId || !moderatorNote || !reason) {
-      alert('Please fill out all required fields.');
-      return;
+  if (!userId || !moderatorNote || !reason) {
+    alert('Please fill out all required fields.');
+    return;
+  }
+
+  try {
+    const response = await fetch(API_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': API_KEY
+      },
+      body: JSON.stringify({ userId, username, moderatorNote, reason })
+    });
+
+    const result = await response.json();
+
+    if (response.ok && result.ok) {
+      document.getElementById('appealForm').style.display = 'none';
+      document.getElementById('thankYouMessage').style.display = 'block';
+    } else {
+      alert(result.error || "Failed to submit appeal. Try again later.");
     }
-
-    try {
-      const response = await fetch(API_URL, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'x-api-key': API_KEY
-        },
-        body: JSON.stringify({ userId, username, reason, moderatorNote })
-      });
-
-      const result = await response.json();
-
-      if (response.ok && result.ok) {
-        document.getElementById('appealForm').style.display = 'none';
-        document.getElementById('thankYouMessage').style.display = 'block';
-      } else {
-        alert(result.error || "Failed to submit appeal. Try again later.");
-      }
-    } catch (err) {
-      console.error(err);
-      alert("Error connecting to server. Make sure your bot/server is running.");
-    }
-  });
+  } catch (err) {
+    console.error(err);
+    alert("Error connecting to server. Make sure your bot/server is running.");
+  }
+});
 </script>
+
 
 </body>
 </html>
