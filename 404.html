@@ -9,6 +9,7 @@
       background-color: #fff0f0;
       text-align: center;
       padding: 60px;
+      transition: opacity 0.6s ease;
     }
     h1 {
       font-size: 38px;
@@ -36,36 +37,46 @@
   <a href="index.html">Go back to the home menu (stormyandhops.com)</a>
 
   <script>
-    // List of valid pages
+    // === VALID PAGE LIST ===
     const validPages = [
       "index.html", "Characters.html", "Credits.html", "Episode.html",
       "Fanart.html", "Leaks.html", "Live.html", "QNA.html"
     ];
 
+    // === CHECK IF CURRENT PAGE IS VALID ===
     const currentPage = window.location.pathname.split("/").pop();
     if (validPages.includes(currentPage)) {
+      console.log(`Valid page detected: ${currentPage}`);
       window.location.href = currentPage;
     }
 
-    // Blocked countries list
-    const blockedCountries = ["RU", "KP", "IR", "YE", "PS", "US"]; // US = for testing
+    // === COUNTRY BLOCK LIST ===
+    // 'US' is included for testing purposes; remove it when confirmed working.
+    const blockedCountries = ["RU", "KP", "IR", "YE", "PS", "US"];
 
-    // Fetch location
+    // === FETCH USER LOCATION ===
     fetch("https://ipapi.co/json/")
       .then(response => response.json())
       .then(data => {
-        console.log("Geo info:", data);
         const country = data.country_code;
-        const city = data.city.toLowerCase();
+        const city = (data.city || "").toLowerCase();
 
-        if (blockedCountries.includes(country)) {
-          console.log(`Blocked country detected: ${country}`);
-          window.location.href = "Blocked.html";
-        } else if (country === "RU" && city.includes("moscow")) {
-          console.log(`Blocked city detected: ${city}`);
-          window.location.href = "Blocked.html";
+        console.log(`User location detected: ${country}, ${city}`);
+
+        // === BLOCK CONDITIONS ===
+        const isBlockedCountry = blockedCountries.includes(country);
+        const isBlockedCity = (country === "RU" && city.includes("moscow"));
+
+        if (isBlockedCountry || isBlockedCity) {
+          console.warn(`Access blocked: ${country} (${city})`);
+
+          // Fade out before redirect for a smooth transition
+          document.body.style.opacity = "0";
+          setTimeout(() => {
+            window.location.href = "404.html"; // Redirect to the same 404 page
+          }, 600);
         } else {
-          console.log("Country allowed:", country, "| City:", city);
+          console.log(`Access allowed: ${country}, ${city}`);
         }
       })
       .catch(error => {
@@ -73,5 +84,4 @@
       });
   </script>
 </body>
-</html>
 </html>
