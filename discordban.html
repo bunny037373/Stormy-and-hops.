@@ -88,44 +88,65 @@
   <p>Hello! Click <a href="#form" style="color:#43b581;">here to appeal</a></p>
 
   <form id="appealForm">
-    <label for="Discord user ID">Discord user ID (you can look i the ... of your profile and copy it)</label>
-    <input type="text" id="username" name="username" required placeholder="Example#1234">
+    <label for="userId">Discord User ID:</label>
+    <input type="text" id="userId" name="userId" required placeholder="Example: 123456789012345678">
+
+    <label for="username">Username (Optional):</label>
+    <input type="text" id="username" name="username" placeholder="Example#1234">
 
     <label for="moderatorNote">Moderator Note:</label>
     <textarea id="moderatorNote" name="moderatorNote" placeholder="Reason you were banned" required></textarea>
 
-    <label for="reason">Tell us why you should be unbanned:</label>
+    <label for="reason">Why should you be unbanned?</label>
     <textarea id="reason" name="reason" placeholder="Your appeal explanation..." required></textarea>
 
     <button type="submit">Submit Appeal</button>
   </form>
 
   <div class="thank-you" id="thankYouMessage">
-    Thank you! Your form has been submitted. We will review it as soon as possible.
+    Thank you! Your appeal has been submitted. We will review it as soon as possible.
   </div>
 </div>
 
 <script>
-  document.getElementById('appealForm').addEventListener('submit', function(e) {
+  const API_URL = "http://localhost:3000/appeal"; // Change this to your deployed server
+  const API_KEY = "YOUR_API_SECRET_HERE"; // Must match your bot's API_SECRET
+
+  document.getElementById('appealForm').addEventListener('submit', async function(e) {
     e.preventDefault();
 
+    const userId = document.getElementById('userId').value.trim();
     const username = document.getElementById('username').value.trim();
     const moderatorNote = document.getElementById('moderatorNote').value.trim();
     const reason = document.getElementById('reason').value.trim();
 
-    if (!username || !moderatorNote || !reason) {
-      alert('Please fill out all fields.');
+    if (!userId || !moderatorNote || !reason) {
+      alert('Please fill out all required fields.');
       return;
     }
 
-    // Simulate form submission
-    console.log('Form submitted:', { username, moderatorNote, reason });
+    try {
+      const response = await fetch(API_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-api-key': API_KEY
+        },
+        body: JSON.stringify({ userId, username, moderatorNote, reason })
+      });
 
-    // Show thank you message
-    document.getElementById('appealForm').style.display = 'none';
-    document.getElementById('thankYouMessage').style.display = 'block';
+      const result = await response.json();
 
-    // Here you could send the form data to a server using fetch if you set one up
+      if (response.ok && result.ok) {
+        document.getElementById('appealForm').style.display = 'none';
+        document.getElementById('thankYouMessage').style.display = 'block';
+      } else {
+        alert(result.error || "Failed to submit appeal. Try again later.");
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Error connecting to server. Make sure your bot/server is running.");
+    }
   });
 </script>
 
