@@ -163,16 +163,7 @@
       margin: 8px 0;
     }
 
-    .snowflake {
-      position: absolute;
-      top: -10px;
-      pointer-events: none;
-      z-index: 9999;
-      font-size: 24px;
-      color: #ffffff;
-      user-select: none;
-      animation: fall 5s linear infinite;
-    }
+
 
     @keyframes fall {
       to {
@@ -238,23 +229,6 @@
     setTimeout(showContent, 2000); // Normal
     setTimeout(showContent, 6000); // Fallback
 
-    // Start snowfall
-    setInterval(createSnowflakes, 100);
-  }
-
-  function createSnowflakes() {
-    const snowflake = document.createElement('div');
-    snowflake.className = 'snowflake';
-    snowflake.textContent = '❄';
-    snowflake.style.left = `${Math.random() * window.innerWidth}px`;
-    snowflake.style.fontSize = `${Math.random() * 10 + 10}px`;
-    snowflake.style.animationDuration = `${Math.random() * 3 + 2}s`;
-    document.body.appendChild(snowflake);
-    snowflake.addEventListener('animationend', () => {
-      snowflake.remove();
-    });
-  }
-</script>
 
 </body>
 </html>
