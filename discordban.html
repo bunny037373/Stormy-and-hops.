@@ -1,1 +1,133 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Discord Ban Appeal Form</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background: #2c2f33;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+  }
+  .container {
+    background: #23272a;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.5);
+    width: 100%;
+    max-width: 500px;
+  }
+  h1 {
+    text-align: center;
+    color: #7289da;
+    margin-bottom: 20px;
+  }
+  label {
+    display: block;
+    margin-top: 15px;
+    font-weight: bold;
+  }
+  input, textarea {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border-radius: 6px;
+    border: none;
+    font-size: 14px;
+  }
+  textarea {
+    resize: vertical;
+    min-height: 100px;
+  }
+  button {
+    background: #7289da;
+    color: white;
+    border: none;
+    padding: 12px;
+    width: 100%;
+    border-radius: 6px;
+    margin-top: 20px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  button:hover {
+    background: #5b6eae;
+  }
+  .thank-you {
+    display: none;
+    text-align: center;
+    margin-top: 20px;
+    color: #43b581;
+    font-weight: bold;
+  }
+  .link-container {
+    text-align: center;
+    margin-top: 15px;
+  }
+  .link-container a {
+    color: #7289da;
+    text-decoration: none;
+    font-weight: bold;
+  }
+  .link-container a:hover {
+    text-decoration: underline;
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <h1>Ban Appeal Form</h1>
+  <p>Hello! Click <a href="#form" style="color:#43b581;">here to appeal</a></p>
+
+  <form id="appealForm">
+    <label for="username">Discord Username:</label>
+    <input type="text" id="username" name="username" required placeholder="Example#1234">
+
+    <label for="moderatorNote">Moderator Note:</label>
+    <textarea id="moderatorNote" name="moderatorNote" placeholder="Reason you were banned" required></textarea>
+
+    <label for="reason">Tell us why you should be unbanned:</label>
+    <textarea id="reason" name="reason" placeholder="Your appeal explanation..." required></textarea>
+
+    <button type="submit">Submit Appeal</button>
+  </form>
+
+  <div class="thank-you" id="thankYouMessage">
+    Thank you! Your form has been submitted. We will review it as soon as possible.
+  </div>
+</div>
+
+<script>
+  document.getElementById('appealForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    const username = document.getElementById('username').value.trim();
+    const moderatorNote = document.getElementById('moderatorNote').value.trim();
+    const reason = document.getElementById('reason').value.trim();
+
+    if (!username || !moderatorNote || !reason) {
+      alert('Please fill out all fields.');
+      return;
+    }
+
+    // Simulate form submission
+    console.log('Form submitted:', { username, moderatorNote, reason });
+
+    // Show thank you message
+    document.getElementById('appealForm').style.display = 'none';
+    document.getElementById('thankYouMessage').style.display = 'block';
+
+    // Here you could send the form data to a server using fetch if you set one up
+  });
+</script>
+
+</body>
+</html>
