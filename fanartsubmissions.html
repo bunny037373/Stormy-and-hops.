@@ -1,149 +1,217 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>Fan Art Submissions Admin</title>
 <style>
-  body {
-    font-family: 'Comic Sans MS', sans-serif;
-    background: linear-gradient(to bottom right, #fffbe6, #ffd9d9);
-    color: #333;
-    padding: 30px;
-  }
-  h1 {
-    color: #ff0000;
-    text-align: center;
-    text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
-  }
-  .submission {
-    background: white;
-    border: 3px solid #ffd500;
-    border-radius: 20px;
-    padding: 20px;
-    margin: 20px auto;
-    max-width: 700px;
-    box-shadow: 0 6px 15px rgba(0,0,0,0.1);
-  }
-  .submission h2 {
-    margin: 0 0 10px 0;
-    color: #ff0000;
-  }
-  .submission p {
-    margin: 5px 0;
-  }
-  .submission img {
-    max-width: 100%;
-    border-radius: 15px;
-    margin: 10px 0;
-  }
-  .btn {
-    padding: 8px 15px;
-    margin-right: 10px;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-    font-weight: bold;
-  }
-  .approve-btn {
-    background: linear-gradient(to right, #4CAF50, #80e27e);
-    color: white;
-  }
-  .deny-btn {
-    background: linear-gradient(to right, #ff0000, #ff6666);
-    color: white;
-  }
-  .reason-input {
-    display: none;
-    margin-top: 10px;
-    width: 100%;
-    padding: 8px;
-    border-radius: 10px;
-    border: 2px solid #ffd500;
-  }
+  body { font-family: 'Comic Sans MS', sans-serif; background: linear-gradient(to bottom right,#fffbe6,#ffd9d9); color:#333; padding:24px; }
+  h1 { color:#ff0000; text-align:center; text-shadow:1px 1px 2px rgba(0,0,0,0.2); }
+  #submissionsContainer { max-width: 900px; margin: 18px auto; }
+  .submission { background: #fff; border: 3px solid #ffd500; border-radius: 16px; padding: 14px; margin-bottom: 16px; box-shadow: 0 6px 15px rgba(0,0,0,0.08); }
+  .submission h2 { margin:0 0 8px 0; color:#ff0000; font-size:18px; }
+  .submission p { margin:4px 0; }
+  .submission img { max-width: 100%; border-radius: 12px; margin-top: 10px; }
+  .controls { margin-top:10px; }
+  .btn { padding:8px 12px; border-radius:10px; border:none; cursor:pointer; font-weight:bold; margin-right:8px; }
+  .approve { background: linear-gradient(to right,#4CAF50,#80e27e); color:white; }
+  .deny { background: linear-gradient(to right,#ff0000,#ff6666); color:white; }
+  .reason { margin-top:8px; width:100%; padding:8px; border-radius:8px; border:2px solid #ffd500; display:none; box-sizing:border-box; }
+  .status { font-weight:bold; }
 </style>
 </head>
 <body>
-<h1>Fan Art Submissions Admin</h1>
-<div id="submissionsContainer"></div>
+  <h1>Fan Art Submissions Admin</h1>
+  <div id="submissionsContainer">Loading submissions…</div>
 
-<!-- Firebase SDK -->
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.6.1/firebase-app.js";
-import { getFirestore, collection, getDocs, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.6.1/firebase-firestore.js";
+  <script type="module">
+    // --- Firebase imports (v10+ modular) ---
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.6.1/firebase-app.js";
+    import { getFirestore, collection, doc, onSnapshot, updateDoc } from "https://www.gstatic.com/firebasejs/10.6.1/firebase-firestore.js";
+    import { getStorage, ref, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.6.1/firebase-storage.js";
 
-// Firebase configuration
-const firebaseConfig = {
-  apiKey: "AIzaSyCGIfsNq5MSv3tU46xjmDXKcsJM6LBXxUE",
-  authDomain: "stormy-and-hops.firebaseapp.com",
-  projectId: "stormy-and-hops",
-  storageBucket: "stormy-and-hops.appspot.com",
-  messagingSenderId: "227495295577",
-  appId: "1:227495295577:web:4928330cefefba09a50f48",
-  measurementId: "G-LTJ1P6QB6Y"
-};
+    // --- Firebase config: MUST match the submit page config exactly ---
+    const firebaseConfig = {
+      apiKey: "AIzaSyCGIfsNq5MSv3tU46xjmDXKcsJM6LBXxUE",
+      authDomain: "stormy-and-hops.firebaseapp.com",
+      projectId: "stormy-and-hops",
+      storageBucket: "stormy-and-hops.appspot.com", // <- make sure this matches submit page
+      messagingSenderId: "227495295577",
+      appId: "1:227495295577:web:4928330cefefba09a50f48",
+      measurementId: "G-LTJ1P6QB6Y"
+    };
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
+    // Initialize
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const storage = getStorage(app);
 
-const submissionsContainer = document.getElementById("submissionsContainer");
+    const submissionsContainer = document.getElementById('submissionsContainer');
 
-// Load submissions from Firestore
-async function loadSubmissions() {
-  submissionsContainer.innerHTML = "";
-  const querySnapshot = await getDocs(collection(db, "fanArtSubmissions"));
-  querySnapshot.forEach(docSnap => {
-    const data = docSnap.data();
-    const submissionId = docSnap.id;
+    // Helper to create DOM for a submission
+    function renderSubmission(docId, data) {
+      const wrapper = document.createElement('div');
+      wrapper.className = 'submission';
+      wrapper.id = 'sub-' + docId;
 
-    const div = document.createElement("div");
-    div.className = "submission";
+      const title = document.createElement('h2');
+      title.textContent = data.title || "(Untitled)";
 
-    div.innerHTML = `
-      <h2>${data.title}</h2>
-      <p><strong>Artist:</strong> ${data.name} (${data.discord})</p>
-      <p><strong>Description:</strong> ${data.desc || "None"}</p>
-      ${data.fileUrl ? `<img src="${data.fileUrl}" alt="${data.title}">` : ""}
-      <p><strong>Status:</strong> <span id="status-${submissionId}">${data.status || "Pending"}</span></p>
-      <input type="text" class="reason-input" id="reason-${submissionId}" placeholder="Reason for denial">
-      <button class="btn approve-btn" onclick="approve('${submissionId}')">Approve</button>
-      <button class="btn deny-btn" onclick="showReasonInput('${submissionId}')">Deny</button>
-      <button class="btn deny-btn" id="submitReasonBtn-${submissionId}" style="display:none;" onclick="deny('${submissionId}')">Submit Denial</button>
-    `;
-    submissionsContainer.appendChild(div);
-  });
-}
+      const meta = document.createElement('p');
+      meta.innerHTML = `<strong>Artist:</strong> ${escapeHtml(data.name || '')} (${escapeHtml(data.discord || '')})`;
 
-// Approve function
-async function approve(id) {
-  const statusEl = document.getElementById(`status-${id}`);
-  await updateDoc(doc(db, "fanArtSubmissions", id), { status: "Approved", denialReason: "" });
-  statusEl.textContent = "Approved";
-}
+      const desc = document.createElement('p');
+      desc.innerHTML = `<strong>Description:</strong> ${escapeHtml(data.desc || 'None')}`;
 
-// Show denial input
-function showReasonInput(id) {
-  document.getElementById(`reason-${id}`).style.display = "block";
-  document.getElementById(`submitReasonBtn-${id}`).style.display = "inline-block";
-}
+      const status = document.createElement('p');
+      status.className = 'status';
+      status.id = `status-${docId}`;
+      status.textContent = 'Status: ' + (data.status || 'Pending');
 
-// Deny function
-async function deny(id) {
-  const reason = document.getElementById(`reason-${id}`).value.trim();
-  if (!reason) {
-    alert("Please provide a reason for denial.");
-    return;
-  }
-  const statusEl = document.getElementById(`status-${id}`);
-  await updateDoc(doc(db, "fanArtSubmissions", id), { status: "Denied", denialReason: reason });
-  statusEl.textContent = `Denied - Reason: ${reason}`;
-  document.getElementById(`reason-${id}`).style.display = "none";
-  document.getElementById(`submitReasonBtn-${id}`).style.display = "none";
-}
+      wrapper.appendChild(title);
+      wrapper.appendChild(meta);
+      wrapper.appendChild(desc);
 
-// Load submissions on page load
-loadSubmissions();
-</script>
+      // image placeholder — show if fileUrl exists; otherwise try to load from storage path if provided
+      if (data.fileUrl) {
+        const img = document.createElement('img');
+        img.src = data.fileUrl;
+        img.alt = data.title || 'fanart';
+        wrapper.appendChild(img);
+      } else if (data.filePath) {
+        // optional: if you saved storage path instead of download URL
+        const img = document.createElement('img');
+        // try to get download URL
+        getDownloadURL(ref(storage, data.filePath)).then(url => { img.src = url; }).catch(()=>{});
+        wrapper.appendChild(img);
+      }
+
+      wrapper.appendChild(status);
+
+      // Denial reason display when denied
+      if (data.status && data.status.toLowerCase().startsWith('denied')) {
+        const dr = document.createElement('p');
+        dr.innerHTML = `<strong>Denial reason:</strong> ${escapeHtml(data.denialReason || '')}`;
+        wrapper.appendChild(dr);
+      }
+
+      // controls
+      const controls = document.createElement('div');
+      controls.className = 'controls';
+
+      const approveBtn = document.createElement('button');
+      approveBtn.className = 'btn approve';
+      approveBtn.textContent = 'Approve';
+      approveBtn.onclick = () => approveSubmission(docId);
+
+      const denyBtn = document.createElement('button');
+      denyBtn.className = 'btn deny';
+      denyBtn.textContent = 'Deny';
+      denyBtn.onclick = () => {
+        const reasonInput = wrapper.querySelector(`#reason-${docId}`);
+        reasonInput.style.display = 'block';
+        wrapper.querySelector(`#submitreason-${docId}`).style.display = 'inline-block';
+      };
+
+      const reasonInput = document.createElement('input');
+      reasonInput.className = 'reason';
+      reasonInput.id = `reason-${docId}`;
+      reasonInput.placeholder = 'Reason for denial (required)';
+
+      const submitReasonBtn = document.createElement('button');
+      submitReasonBtn.className = 'btn deny';
+      submitReasonBtn.id = `submitreason-${docId}`;
+      submitReasonBtn.style.display = 'none';
+      submitReasonBtn.textContent = 'Submit Denial';
+      submitReasonBtn.onclick = () => denySubmission(docId);
+
+      controls.appendChild(approveBtn);
+      controls.appendChild(denyBtn);
+      controls.appendChild(reasonInput);
+      controls.appendChild(submitReasonBtn);
+
+      wrapper.appendChild(controls);
+
+      return wrapper;
+    }
+
+    // Escape helper (very small)
+    function escapeHtml(str) {
+      return String(str).replace(/[&<>"']/g, function(m){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]; });
+    }
+
+    // Real-time listener: listens to the collection and updates DOM
+    const colRef = collection(db, 'fanArtSubmissions'); // <- make sure this matches submit page
+    onSnapshot(colRef, (snapshot) => {
+      // Keep track of existing IDs so we can remove deleted docs
+      const idsSeen = new Set();
+      snapshot.forEach(docSnap => {
+        const id = docSnap.id;
+        idsSeen.add(id);
+        const data = docSnap.data();
+
+        const existing = document.getElementById('sub-' + id);
+        if (existing) {
+          // update status/denial text if changed
+          const statusEl = document.getElementById(`status-${id}`);
+          if (statusEl) statusEl.textContent = 'Status: ' + (data.status || 'Pending');
+
+          // update denial reason display if denied
+          if (data.status && data.status.toLowerCase().startsWith('denied')) {
+            if (!existing.querySelector('.denial-display')) {
+              const dr = document.createElement('p');
+              dr.className = 'denial-display';
+              dr.innerHTML = `<strong>Denial reason:</strong> ${escapeHtml(data.denialReason || '')}`;
+              existing.appendChild(dr);
+            } else {
+              existing.querySelector('.denial-display').innerHTML = `<strong>Denial reason:</strong> ${escapeHtml(data.denialReason||'')}`;
+            }
+          }
+        } else {
+          // new doc -> render and append
+          const node = renderSubmission(id, data);
+          submissionsContainer.prepend(node); // newest on top
+        }
+      });
+
+      // remove DOM nodes for docs that no longer exist
+      Array.from(document.querySelectorAll('[id^="sub-"]')).forEach(el => {
+        const id = el.id.replace('sub-','');
+        if (!idsSeen.has(id)) el.remove();
+      });
+
+      if (snapshot.empty) {
+        submissionsContainer.innerHTML = '<p style="text-align:center;">No submissions yet.</p>';
+      }
+    }, (err) => {
+      submissionsContainer.innerHTML = `<p style="color:red">Error loading submissions: ${escapeHtml(err.message)}</p>`;
+      console.error('onSnapshot error', err);
+    });
+
+    // Approve function
+    async function approveSubmission(docId) {
+      try {
+        await updateDoc(doc(db, 'fanArtSubmissions', docId), { status: 'Approved', denialReason: '' });
+      } catch (e) {
+        alert('Error approving: ' + e.message);
+        console.error(e);
+      }
+    }
+
+    // Deny function (reads reason from input)
+    async function denySubmission(docId) {
+      try {
+        const reasonEl = document.getElementById(`reason-${docId}`);
+        const reason = reasonEl.value.trim();
+        if (!reason) { alert('Please enter a reason for denial.'); return; }
+        await updateDoc(doc(db, 'fanArtSubmissions', docId), { status: 'Denied', denialReason: reason });
+        reasonEl.style.display = 'none';
+        document.getElementById(`submitreason-${docId}`).style.display = 'none';
+      } catch (e) {
+        alert('Error denying: ' + e.message);
+        console.error(e);
+      }
+    }
+  </script>
 </body>
 </html>
