@@ -1,69 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Fan Art Submit</title>
-  <style>
-    body {
-      font-family: 'Comic Sans MS', sans-serif;
-      background: linear-gradient(to bottom right, #fffbe6, #ffd9d9);
-      color: #333;
-      text-align: center;
-      padding: 30px;
-    }
-    form {
-      background: white;
-      border: 3px solid #ffd500;
-      border-radius: 20px;
-      padding: 25px;
-      max-width: 600px;
-      margin: 30px auto;
-      box-shadow: 0 6px 15px rgba(0,0,0,0.1);
-      text-align: left;
-    }
-    label { font-weight: bold; display: block; margin-top: 10px; color: #ff0000; }
-    input, textarea { width: 100%; padding: 10px; margin-top: 5px; border-radius: 10px; border: 2px solid #ffd500; }
-    .submit-btn {
-      margin-top: 20px; width: 100%; background: linear-gradient(to right, #ff0000, #ffd500);
-      color: white; border: none; border-radius: 20px; padding: 10px; font-weight: bold; cursor: pointer;
-    }
-  </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Submit Fan Art - Stormy and Hops</title>
 </head>
 <body>
-  <h1>Submit Your Fan Art</h1>
+  <h2>Submit Your Fan Art</h2>
 
   <form id="fanArtForm">
-    <label>Your Name or Nickname:</label>
-    <input type="text" id="name" required>
+    <label>Name:</label><br>
+    <input type="text" id="name" required><br><br>
 
-    <label>Discord Username:</label>
-    <input type="text" id="discord" required>
+    <label>Discord Username:</label><br>
+    <input type="text" id="discord" required><br><br>
 
-    <label>Title of Your Artwork:</label>
-    <input type="text" id="title" required>
+    <label>Art Title:</label><br>
+    <input type="text" id="title" required><br><br>
 
-    <label>Description (optional):</label>
-    <textarea id="desc"></textarea>
+    <label>Upload Art:</label><br>
+    <input type="file" id="artFile" accept="image/*" required><br><br>
 
-    <label>Upload Your Fan Art (required):</label>
-    <input type="file" id="artFile" accept="image/*" required>
-
-    <button type="submit" class="submit-btn">Submit Fan Art</button>
+    <button type="submit">Submit</button>
   </form>
 
-  <p id="message"></p>
-
   <script type="module">
-    // Import Firebase SDKs
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
-    import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-storage.js";
-    import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js";
+    import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
+    import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-storage.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyCGIfsNq5MSv3tU46xjmDXKcsJM6LBXxUE",
       authDomain: "stormy-and-hops.firebaseapp.com",
-      databaseURL: "https://stormy-and-hops-default-rtdb.firebaseio.com",
       projectId: "stormy-and-hops",
       storageBucket: "stormy-and-hops.firebasestorage.app",
       messagingSenderId: "227495295577",
@@ -75,41 +43,38 @@
     const db = getFirestore(app);
     const storage = getStorage(app);
 
-    const form = document.getElementById('fanArtForm');
-    const message = document.getElementById('message');
-
-    form.addEventListener('submit', async (e) => {
+    document.getElementById("fanArtForm").addEventListener("submit", async (e) => {
       e.preventDefault();
 
-      const name = document.getElementById('name').value.trim();
-      const discord = document.getElementById('discord').value.trim();
-      const title = document.getElementById('title').value.trim();
-      const desc = document.getElementById('desc').value.trim();
-      const file = document.getElementById('artFile').files[0];
+      const name = document.getElementById("name").value;
+      const discord = document.getElementById("discord").value;
+      const title = document.getElementById("title").value;
+      const file = document.getElementById("artFile").files[0];
 
-      if (!name || !discord || !title || !file) {
-        alert("Please fill all required fields!");
+      if (!file) {
+        alert("Please select an image file!");
         return;
       }
 
       try {
-        const storageRef = ref(storage, 'fanart/' + file.name);
+        const storageRef = ref(storage, "fanart/" + file.name);
         await uploadBytes(storageRef, file);
-        const imageUrl = await getDownloadURL(storageRef);
+        const imageURL = await getDownloadURL(storageRef);
 
-        await addDoc(collection(db, "fanArtSubmissions"), {
-          name, discord, title, desc, imageUrl,
-          status: "Pending", createdAt: serverTimestamp()
+        await addDoc(collection(db, "fanartSubmissions"), {
+          name: name,
+          discord: discord,
+          title: title,
+          imageURL: imageURL,
+          status: "Pending",
+          timestamp: new Date().toISOString()
         });
 
-        message.textContent = "✅ Submitted! Redirecting...";
-        form.reset();
-
-        // Redirect to admin review page
-        setTimeout(() => window.location.href = "fanartsubmissions.html", 1000);
+        alert("✅ Fan art submitted successfully!");
+        window.location.href = "fanartsubmissions.html"; // Redirect after success
       } catch (error) {
-        console.error("Error:", error);
-        message.textContent = "❌ Submission failed. Try again.";
+        console.error("Error submitting fan art:", error);
+        alert("❌ There was an error submitting your fan art.");
       }
     });
   </script>
