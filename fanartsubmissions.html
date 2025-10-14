@@ -1,73 +1,80 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Fan Art Submissions Admin</title>
-  <style>
-    body { font-family: 'Comic Sans MS', sans-serif; background: #fffbe6; color: #333; text-align: center; padding: 20px; }
-    .submission {
-      background: white; border: 3px solid #ffd500; border-radius: 15px;
-      padding: 15px; margin: 15px auto; max-width: 600px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-    }
-    img { max-width: 100%; border-radius: 10px; margin-top: 10px; }
-    button {
-      border: none; padding: 10px 15px; border-radius: 10px; font-weight: bold;
-      cursor: pointer; margin: 5px;
-    }
-    .approve { background: #4CAF50; color: white; }
-    .deny { background: #f44336; color: white; }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fan Art Submissions Admin</title>
+<style>
+body { font-family: 'Comic Sans MS', sans-serif; padding: 20px; background: #fffbe6; }
+h1 { color: #ff0000; }
+.submission { border: 3px solid #ffd500; border-radius: 15px; padding: 15px; margin-bottom: 20px; background: white; }
+img { max-width: 200px; display: block; margin-top: 10px; }
+button { margin: 5px; padding: 8px 15px; border-radius: 10px; cursor: pointer; }
+.approve { background: #28a745; color: white; border: none; }
+.deny { background: #dc3545; color: white; border: none; }
+</style>
 </head>
 <body>
-  <h1>🎨 Fan Art Submissions Admin</h1>
-  <div id="submissions"></div>
+<h1>Fan Art Submissions Admin</h1>
+<div id="submissionsContainer"></div>
 
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
-    import { getFirestore, collection, onSnapshot, doc, updateDoc } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.6.1/firebase-app.js";
+import { getFirestore, collection, getDocs, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.6.1/firebase-firestore.js";
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyCGIfsNq5MSv3tU46xjmDXKcsJM6LBXxUE",
-      authDomain: "stormy-and-hops.firebaseapp.com",
-      databaseURL: "https://stormy-and-hops-default-rtdb.firebaseio.com",
-      projectId: "stormy-and-hops",
-      storageBucket: "stormy-and-hops.firebasestorage.app",
-      messagingSenderId: "227495295577",
-      appId: "1:227495295577:web:4928330cefefba09a50f48",
-      measurementId: "G-LTJ1P6QB6Y"
+// Firebase config
+const firebaseConfig = {
+  apiKey: "AIzaSyCGIfsNq5MSv3tU46xjmDXKcsJM6LBXxUE",
+  authDomain: "stormy-and-hops.firebaseapp.com",
+  projectId: "stormy-and-hops",
+  storageBucket: "stormy-and-hops.appspot.com",
+  messagingSenderId: "227495295577",
+  appId: "1:227495295577:web:4928330cefefba09a50f48"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+const container = document.getElementById('submissionsContainer');
+
+async function loadSubmissions() {
+  container.innerHTML = "";
+  const querySnapshot = await getDocs(collection(db, "fanArtSubmissions"));
+  querySnapshot.forEach(docSnap => {
+    const data = docSnap.data();
+    const div = document.createElement('div');
+    div.classList.add('submission');
+    div.innerHTML = `
+      <strong>Name:</strong> ${data.name}<br>
+      <strong>Discord:</strong> ${data.discord}<br>
+      <strong>Title:</strong> ${data.title}<br>
+      <strong>Description:</strong> ${data.desc}<br>
+      <img src="${data.fileUrl}" alt="Fan Art">
+      <strong>Status:</strong> ${data.status}<br>
+      <button class="approve">Approve</button>
+      <button class="deny">Deny</button>
+    `;
+    const approveBtn = div.querySelector('.approve');
+    const denyBtn = div.querySelector('.deny');
+
+    approveBtn.onclick = async () => {
+      await updateDoc(doc(db, "fanArtSubmissions", docSnap.id), { status: "Approved" });
+      loadSubmissions();
     };
 
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-    const submissionsDiv = document.getElementById('submissions');
+    denyBtn.onclick = async () => {
+      const reason = prompt("Reason for denial:");
+      if (reason !== null) {
+        await updateDoc(doc(db, "fanArtSubmissions", docSnap.id), { status: "Denied", denialReason: reason });
+        loadSubmissions();
+      }
+    };
 
-    // Real-time listener
-    onSnapshot(collection(db, "fanArtSubmissions"), (snapshot) => {
-      submissionsDiv.innerHTML = "";
-      snapshot.forEach((docSnap) => {
-        const data = docSnap.data();
-        const div = document.createElement("div");
-        div.className = "submission";
-        div.innerHTML = `
-          <h3>${data.title}</h3>
-          <p><strong>By:</strong> ${data.name} (${data.discord})</p>
-          <p>${data.desc || ""}</p>
-          <img src="${data.imageUrl}" alt="${data.title}">
-          <p><strong>Status:</strong> ${data.status}</p>
-          <button class="approve">✅ Approve</button>
-          <button class="deny">❌ Deny</button>
-        `;
-        div.querySelector(".approve").onclick = async () => {
-          await updateDoc(doc(db, "fanArtSubmissions", docSnap.id), { status: "Approved" });
-        };
-        div.querySelector(".deny").onclick = async () => {
-          const reason = prompt("Enter denial reason:");
-          await updateDoc(doc(db, "fanArtSubmissions", docSnap.id), { status: "Denied: " + reason });
-        };
-        submissionsDiv.appendChild(div);
-      });
-    });
-  </script>
+    container.appendChild(div);
+  });
+}
+
+loadSubmissions();
+</script>
 </body>
 </html>
