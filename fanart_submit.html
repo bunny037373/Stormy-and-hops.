@@ -1,79 +1,102 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Fan Art Submissions - Admin</title>
-<style>
-  body {
-    font-family: 'Comic Sans MS', sans-serif;
-    background: linear-gradient(to bottom right, #fffbe6, #ffd9d9);
-    margin: 0;
-    padding: 30px;
-    text-align: center;
-  }
-  h1 {
-    color: #ff0000;
-    text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
-  }
-  .submission {
-    background: white;
-    border: 3px solid #ffd500;
-    border-radius: 20px;
-    padding: 20px;
-    margin: 20px auto;
-    max-width: 600px;
-    box-shadow: 0 6px 15px rgba(0,0,0,0.1);
-    text-align: left;
-  }
-  .submission img {
-    width: 100%;
-    border-radius: 15px;
-    margin-top: 10px;
-  }
-  .btn {
-    border: none;
-    border-radius: 10px;
-    padding: 10px 20px;
-    font-weight: bold;
-    cursor: pointer;
-    margin-right: 10px;
-    transition: 0.3s;
-  }
-  .approve {
-    background: #4CAF50;
-    color: white;
-  }
-  .approve:hover { background: #45a049; }
-  .deny {
-    background: #ff4444;
-    color: white;
-  }
-  .deny:hover { background: #ff6666; }
-  .reason-box {
-    margin-top: 10px;
-    display: none;
-  }
-  textarea {
-    width: 100%;
-    height: 60px;
-    border: 2px solid #ffd500;
-    border-radius: 10px;
-    padding: 5px;
-  }
-  .status {
-    font-weight: bold;
-    margin-top: 5px;
-  }
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fan Art Submit</title>
+  <style>
+    body {
+      font-family: 'Comic Sans MS', sans-serif;
+      background: linear-gradient(to bottom right, #fffbe6, #ffd9d9);
+      color: #333;
+      text-align: center;
+      margin: 0;
+      padding: 30px;
+    }
+    h1 { color: #ff0000; text-shadow: 1px 1px 2px rgba(0,0,0,0.2); }
+    .rules {
+      max-width: 700px;
+      margin: 20px auto;
+      background: white;
+      border: 3px solid #ffd500;
+      border-radius: 20px;
+      padding: 25px;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+      text-align: left;
+    }
+    .rules h2 { text-align: center; color: #ff0000; }
+    .rules ol { margin-left: 25px; color: #333; }
+    .rules li { margin-bottom: 10px; line-height: 1.6; }
+    form {
+      background: white;
+      border: 3px solid #ffd500;
+      border-radius: 20px;
+      padding: 25px;
+      max-width: 600px;
+      margin: 30px auto;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+      text-align: left;
+    }
+    label { font-weight: bold; display: block; margin-top: 10px; color: #ff0000; }
+    input, textarea {
+      width: 100%; padding: 10px; margin-top: 5px;
+      border-radius: 10px; border: 2px solid #ffd500; font-family: inherit;
+    }
+    textarea { resize: none; height: 80px; }
+    .submit-btn {
+      margin-top: 20px; display: block; width: 100%;
+      background: linear-gradient(to right, #ff0000, #ffd500);
+      color: white; border: none; border-radius: 20px;
+      padding: 10px; font-weight: bold; cursor: pointer; transition: 0.3s;
+    }
+    .submit-btn:hover { background: #ff6666; transform: scale(1.05); }
+    .message {
+      display: none; margin-top: 20px; background: #fff3cd;
+      border: 2px solid #ffeeba; border-radius: 15px; padding: 15px;
+      font-weight: bold; color: #856404; max-width: 500px; margin: 20px auto;
+      text-align: center;
+    }
+  </style>
 </head>
 <body>
-  <h1>🎨 Fan Art Submissions (Admin)</h1>
-  <div id="submissionsList">Loading submissions...</div>
+  <h1>Fan Art Submit</h1>
 
+  <div class="rules">
+    <h2>RULES Before Submitting</h2>
+    <ol>
+      <li><strong>No NSFW or Gore:</strong> Do not send any NSFW or gore.</li>
+      <li><strong>Minimal Style Copying:</strong> Include your own twist.</li>
+      <li><strong>Avoid Spamming:</strong> Submit only once per artwork.</li>
+      <li><strong>Respect Originality:</strong> No stolen assets.</li>
+      <li><strong>Fake Accounts:</strong> Auto-denial for impersonation.</li>
+    </ol>
+  </div>
+
+  <form id="fanArtForm">
+    <h2>🖼️ Submit Your Fan Art</h2>
+    <label>Your Name or Nickname:</label>
+    <input type="text" id="name" required>
+    <label>Discord Username:</label>
+    <input type="text" id="discord" required>
+    <label>Title of Your Artwork:</label>
+    <input type="text" id="title" required>
+    <label>Description (optional):</label>
+    <textarea id="desc"></textarea>
+    <label>Upload Your Fan Art:</label>
+    <input type="file" id="artFile" accept="image/*" required>
+    <button type="submit" class="submit-btn">Submit Fan Art</button>
+  </form>
+
+  <div class="message" id="messageBox">
+    ✅ Your fan art has been submitted! Please wait for review.  
+    <br>Thank you for sharing your creativity! 🐰
+  </div>
+
+  <!-- Firebase Script -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.6.1/firebase-app.js";
-    import { getFirestore, collection, getDocs, updateDoc, doc } from "https://www.gstatic.com/firebasejs/10.6.1/firebase-firestore.js";
+    import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.6.1/firebase-firestore.js";
+    import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.6.1/firebase-storage.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyCGIfsNq5MSv3tU46xjmDXKcsJM6LBXxUE",
@@ -87,82 +110,33 @@
 
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
+    const storage = getStorage(app);
 
-    const submissionsList = document.getElementById('submissionsList');
+    document.getElementById("fanArtForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
 
-    async function loadSubmissions() {
-      submissionsList.innerHTML = "";
-      const querySnapshot = await getDocs(collection(db, "fanArtSubmissions"));
-      if (querySnapshot.empty) {
-        submissionsList.innerHTML = "<p>No fan art submissions yet.</p>";
+      const name = document.getElementById("name").value.trim();
+      const discord = document.getElementById("discord").value.trim();
+      const title = document.getElementById("title").value.trim();
+      const desc = document.getElementById("desc").value.trim();
+      const file = document.getElementById("artFile").files[0];
+
+      if (!name || !discord || !title || !file) {
+        alert("Please fill all required fields.");
         return;
       }
 
-      querySnapshot.forEach((docSnap) => {
-        const data = docSnap.data();
-        const div = document.createElement('div');
-        div.className = 'submission';
-        div.innerHTML = `
-          <p><strong>Name:</strong> ${data.name}</p>
-          <p><strong>Discord:</strong> ${data.discord}</p>
-          <p><strong>Title:</strong> ${data.title}</p>
-          <p><strong>Description:</strong> ${data.desc || "(none)"}</p>
-          <img src="${data.fileUrl}" alt="${data.title}">
-          <p class="status">Status: ${data.status}</p>
+      const storageRef = ref(storage, "fanArt/" + Date.now() + "_" + file.name);
+      await uploadBytes(storageRef, file);
+      const fileUrl = await getDownloadURL(storageRef);
 
-          <button class="btn approve">Approve</button>
-          <button class="btn deny">Deny</button>
-
-          <div class="reason-box">
-            <textarea placeholder="Reason for denial..."></textarea>
-            <button class="btn deny">Confirm Deny</button>
-          </div>
-        `;
-
-        const approveBtn = div.querySelector('.approve');
-        const denyBtn = div.querySelectorAll('.deny')[0];
-        const reasonBox = div.querySelector('.reason-box');
-        const confirmDenyBtn = div.querySelectorAll('.deny')[1];
-
-        // Approve
-        approveBtn.addEventListener('click', async () => {
-          await updateDoc(doc(db, "fanArtSubmissions", docSnap.id), {
-            status: "Approved",
-            denialReason: ""
-          });
-          div.querySelector('.status').textContent = "Status: Approved ✅";
-          approveBtn.remove();
-          denyBtn.remove();
-          reasonBox.remove();
-        });
-
-        // Deny (show reason box)
-        denyBtn.addEventListener('click', () => {
-          reasonBox.style.display = 'block';
-        });
-
-        // Confirm deny
-        confirmDenyBtn.addEventListener('click', async () => {
-          const reason = reasonBox.querySelector('textarea').value.trim();
-          if (!reason) {
-            alert("Please enter a reason for denial.");
-            return;
-          }
-          await updateDoc(doc(db, "fanArtSubmissions", docSnap.id), {
-            status: "Denied ❌",
-            denialReason: reason
-          });
-          div.querySelector('.status').textContent = "Status: Denied ❌ Reason: " + reason;
-          reasonBox.style.display = 'none';
-          approveBtn.remove();
-          denyBtn.remove();
-        });
-
-        submissionsList.appendChild(div);
+      await addDoc(collection(db, "fanArtSubmissions"), {
+        name, discord, title, desc, fileUrl, status: "Pending", denialReason: ""
       });
-    }
 
-    loadSubmissions();
+      document.getElementById("fanArtForm").style.display = "none";
+      document.getElementById("messageBox").style.display = "block";
+    });
   </script>
 </body>
 </html>
